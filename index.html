@@ -166,7 +166,7 @@ label { font-family: ‘Barlow Condensed’, sans-serif; font-size: 12px; font-w
 .set-actions { display: flex; gap: 8px; margin-top: 4px; }
 .set-actions .btn-secondary { flex: 1; }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 200; display: flex; align-items: flex-end; justify-content: center; visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.85); z-index: 200; display: flex; align-items: flex-end; justify-content: center; visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
 .modal-overlay.open { visibility: visible; opacity: 1; }
 .modal { background: var(–bg2); border-radius: 16px 16px 0 0; border-top: 1px solid var(–border2); width: 100%; max-width: 500px; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); animation: slideUp .25s ease; max-height: 85vh; overflow-y: auto; position: relative; z-index: 201; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -494,11 +494,7 @@ canvas { width: 100% !important; }
 
 <script>
 // ─── PWA ──────────────────────────────────────────────
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js').then(reg=>{reg.update();}).catch(()=>{});
-  });
-}
+// Service worker disabled - causes caching issues on iOS Safari
 
 // ─── SHARE IMPORT ─────────────────────────────────────
 window.addEventListener('load',()=>{
