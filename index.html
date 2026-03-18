@@ -494,7 +494,9 @@ canvas { width: 100% !important; }
 <script>
 // ─── PWA ──────────────────────────────────────────────
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{ navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').then(reg=>{reg.update();}).catch(()=>{});
+  });
 }
 
 // ─── SHARE IMPORT ─────────────────────────────────────
@@ -1172,7 +1174,11 @@ function doRestore(mode){
   }catch(e){alert('Restore failed — invalid backup data.');}
 }
 
-DB.load();seedData();HealthLog.load();loadTheme();renderHome();
+try{DB.load();}catch(e){console.error('DB load failed',e);}
+try{seedData();}catch(e){console.error('seedData failed',e);}
+try{HealthLog.load();}catch(e){console.error('HealthLog load failed',e);}
+try{loadTheme();}catch(e){console.error('loadTheme failed',e);}
+try{renderHome();}catch(e){console.error('renderHome failed',e);document.getElementById('home-content').innerHTML='<div class="empty-state">No workouts yet.<br>Go to <b>Manage</b> to create one.</div>';}
 </script>
 
 </body>
