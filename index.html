@@ -36,7 +36,7 @@
 }
 
 - { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { background: var(–bg); color: var(–text); font-family: ‘Barlow’, sans-serif; font-size: 15px; min-height: 100vh; overflow-x: hidden; transition: background .3s, color .3s; }
+  body { background: var(–bg); color: var(–text); font-family: ‘Barlow’, sans-serif; font-size: 15px; min-height: 100vh; overflow-x: hidden; }
 
 [data-theme=“whimsy”] body { background-image: radial-gradient(ellipse at 20% 10%, rgba(255,100,200,.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 90%, rgba(160,80,255,.1) 0%, transparent 50%); }
 [data-theme=“whimsy”] .page-header { font-family: ‘Fredoka One’, sans-serif; letter-spacing: .06em; }
@@ -166,9 +166,9 @@ label { font-family: ‘Barlow Condensed’, sans-serif; font-size: 12px; font-w
 .set-actions { display: flex; gap: 8px; margin-top: 4px; }
 .set-actions .btn-secondary { flex: 1; }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 200; display: none; align-items: flex-end; justify-content: center; -webkit-backdrop-filter: none; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(–bg2); border-radius: 16px 16px 0 0; border-top: 1px solid var(–border2); width: 100%; max-width: 500px; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); animation: slideUp .25s ease; max-height: 85vh; overflow-y: auto; transition: background .3s; position: relative; z-index: 201; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 200; display: flex; align-items: flex-end; justify-content: center; visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
+.modal-overlay.open { visibility: visible; opacity: 1; }
+.modal { background: var(–bg2); border-radius: 16px 16px 0 0; border-top: 1px solid var(–border2); width: 100%; max-width: 500px; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); animation: slideUp .25s ease; max-height: 85vh; overflow-y: auto; position: relative; z-index: 201; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal-title { font-family: ‘Barlow Condensed’, sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 16px; }
 .modal-close { float: right; background: none; border: none; color: var(–text2); font-size: 22px; cursor: pointer; margin-top: -4px; }
