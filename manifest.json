@@ -1,0 +1,25 @@
+{
+  "name": "LIFT LOG",
+  "short_name": "LIFT LOG",
+  "description": "Your personal workout tracker",
+  "start_url": "/Lift-log/",
+  "scope": "/Lift-log/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/0a0a0a/e8ff00?text=LL",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/0a0a0a/e8ff00?text=LL",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
