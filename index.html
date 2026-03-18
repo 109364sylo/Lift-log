@@ -223,9 +223,24 @@ canvas{width:100%!important;}
 .quick-log-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
 .quick-log-row input{flex:1;}
 .share-link-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-top:12px;word-break:break-all;font-family:monospace;font-size:12px;color:var(--text2);line-height:1.5;}
+
+/* Whimsy Easter Eggs */
+.whimsy-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#d400a8,#ff69cc);color:#fff;font-family:‘Fredoka One’,sans-serif;font-size:16px;padding:10px 22px;border-radius:30px;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(212,0,168,.4);animation:whimsy-rise 3.5s ease forwards;}
+@keyframes whimsy-rise{0%{opacity:0;transform:translateX(-50%) translateY(20px);}15%{opacity:1;transform:translateX(-50%) translateY(0);}70%{opacity:1;transform:translateX(-50%) translateY(-10px);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
+.whimsy-emoji{position:fixed;pointer-events:none;z-index:998;font-size:24px;animation:whimsy-float var(–dur,3s) ease forwards;}
+@keyframes whimsy-float{0%{opacity:0;transform:translateY(0) rotate(0deg);}10%{opacity:1;}80%{opacity:.8;}100%{opacity:0;transform:translateY(-70vh) rotate(360deg);}}
+.whimsy-spark{position:fixed;pointer-events:none;z-index:998;font-size:20px;animation:whimsy-spark-out var(–dur,.8s) ease forwards;}
+@keyframes whimsy-spark-out{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(–tx,0px),var(–ty,-60px)) scale(0);}}
+.whimsy-affirmation{display:block;font-family:‘Fredoka One’,sans-serif;font-size:13px;color:#ff69cc;text-align:center;margin-top:2px;animation:whimsy-pop .4s ease;}
+@keyframes whimsy-pop{0%{transform:scale(0);}70%{transform:scale(1.2);}100%{transform:scale(1);}}
 </style>
+
 </head>
 <body>
+<script>
+// CHANGE 1: Service worker — comment out the line below to disable if needed
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
+</script>
 <div class="rest-bar" id="rest-bar">
   <div class="rest-label">REST</div>
   <div class="rest-clock" id="rest-clock">1:30</div>
@@ -396,7 +411,13 @@ function seedData(){
   ].forEach(([name,cat,primary,secondary])=>DB.exercises.push({id:uid(),name,category:cat,muscles_primary:primary,muscles_secondary:secondary}));
   DB.save();
 }
-function setTheme(t){window._applyTheme(t);localStorage.setItem('ironlog_theme',t);const a=document.querySelector('.page.active')?.id;if(a==='page-home')renderHome();else if(a==='page-health')renderHealth();else if(a==='page-manage')renderManage();}
+function setTheme(t){
+  window._applyTheme(t);localStorage.setItem('ironlog_theme',t);
+  clearTimeout(_whimsyToastTimer);
+  if(t==='whimsy'){setTimeout(()=>{_scheduleWhimsyEvents();setTimeout(_whimsyToast,1500);},100);}
+  const a=document.querySelector('.page.active')?.id;
+  if(a==='page-home')renderHome();else if(a==='page-health')renderHealth();else if(a==='page-manage')renderManage();
+}
 function currentTheme(){return document.documentElement.getAttribute('data-theme')||'dark';}
 let session=null,restDur=parseInt(localStorage.getItem('ironlog_rest')||'90'),restTick=null,restLeft=0,restTotal=0,restStartTs=0;
 let selectedExIds=[],editingWorkoutId=null,editingExId=null,editingSessionId=null,sharingWorkoutId=null;
@@ -466,9 +487,39 @@ function exMatch(ex,q){if(!q)return true;const ql=q.toLowerCase();return ex.name
 function promptAddEx(){document.getElementById('session-search').value='';renderSessionExPicker();openModal('modal-add-ex-to-session');}
 function renderSessionExPicker(){
   const used=session.exercises.map(e=>e.exId);const q=document.getElementById('session-search')?.value||'';
-  const avail=DB.exercises.filter(e=>!used.includes(e.id)&&exMatch(e,q));const cats=[...new Set(avail.map(e=>e.category))];let h='';
-  if(!avail.length){h='<p style="color:var(--text2);padding:10px 0;">No exercises found.</p>';}
-  else{cats.forEach(cat=>{const exs=avail.filter(e=>e.category===cat);if(!exs.length)return;const key='s_'+cat;const open=!!collapsedPickerCats[key]||!!q;const kid=key.replace(/\W/g,'_');h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{h+=`<div class="exercise-order-item" onclick="addExToSession('${ex.id}')"><div class="exercise-order-name">${ex.name}</div><div style="color:var(--accent);font-size:20px;">+</div></div>`;});h+=`</div>`;});}
+  const avail=DB.exercises.filter(e=>!used.includes(e.id));
+  if(!q){
+    // No search — show by category as before
+    const cats=[...new Set(avail.map(e=>e.category))];let h='';
+    if(!avail.length){h='<p style="color:var(--text2);padding:10px 0;">No exercises found.</p>';}
+    else{cats.forEach(cat=>{const exs=avail.filter(e=>e.category===cat);if(!exs.length)return;const key='s_'+cat;const open=!!collapsedPickerCats[key];const kid=key.replace(/\W/g,'_');h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{h+=`<div class="exercise-order-item" onclick="addExToSession('${ex.id}')"><div class="exercise-order-name">${ex.name}</div><div style="color:var(--accent);font-size:20px;">+</div></div>`;});h+=`</div>`;});}
+    document.getElementById('session-ex-picker').innerHTML=h;
+    return;
+  }
+  // Search active — split into primary and secondary
+  const ql=q.toLowerCase();
+  const primary=avail.filter(e=>{
+    if(e.name.toLowerCase().includes(ql))return true;
+    if((e.muscles_primary||[]).some(m=>m.toLowerCase().includes(ql)))return true;
+    if(e.category.toLowerCase().includes(ql))return true;
+    return false;
+  });
+  const secondary=avail.filter(e=>{
+    if(primary.includes(e))return false;
+    return (e.muscles_secondary||[]).some(m=>m.toLowerCase().includes(ql));
+  });
+  let h='';
+  if(!primary.length&&!secondary.length){h='<p style="color:var(--text2);padding:10px 0;">No exercises found.</p>';}
+  else{
+    if(primary.length){
+      h+=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Primary Movers</div>`;
+      primary.forEach(ex=>{h+=`<div class="exercise-order-item" onclick="addExToSession('${ex.id}')"><div class="exercise-order-name">${ex.name}</div><div style="color:var(--accent);font-size:20px;">+</div></div>`;});
+    }
+    if(secondary.length){
+      h+=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin:12px 0 6px;border-top:1px solid var(--border);padding-top:10px;">Also Works ${q}</div>`;
+      secondary.forEach(ex=>{h+=`<div class="exercise-order-item" onclick="addExToSession('${ex.id}')" style="opacity:.7;"><div class="exercise-order-name">${ex.name}</div><div style="color:var(--text2);font-size:20px;">+</div></div>`;});
+    }
+  }
   document.getElementById('session-ex-picker').innerHTML=h;
 }
 function togglePCat(key,kid){collapsedPickerCats[key]=!collapsedPickerCats[key];const body=document.getElementById('cb-'+kid);const arrow=document.getElementById('ca-'+kid);if(body){body.classList.toggle('open',collapsedPickerCats[key]);arrow?.classList.toggle('open',collapsedPickerCats[key]);}}
@@ -477,10 +528,17 @@ function startRest(dur){
   dur=dur||restDur;stopRest();restTotal=dur;restLeft=dur;restStartTs=Date.now();
   if(navigator.vibrate)navigator.vibrate(50);
   if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();
+  setTimeout(_showRestAffirmation, 300);
   document.getElementById('rest-bar').classList.add('active');document.getElementById('rest-spacer').classList.add('active');
   updateRest();restTick=setInterval(()=>{restLeft=Math.max(0,restTotal-Math.round((Date.now()-restStartTs)/1000));updateRest();if(restLeft<=0){stopRest();if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);try{if(Notification.permission==='granted')new Notification('LIFT LOG',{body:'Rest complete — time to lift!'});}catch(e){}}},500);
 }
 function updateRest(){const m=Math.floor(restLeft/60),s=restLeft%60;const cl=document.getElementById('rest-clock'),fi=document.getElementById('rest-fill');cl.textContent=`${m}:${s.toString().padStart(2,'0')}`;fi.style.width=(restLeft/restTotal*100)+'%';const u=restLeft<=10;cl.classList.toggle('urgent',u);fi.classList.toggle('urgent',u);}
+function _showRestAffirmation(){
+  const aff=_whimsyAffirmation();if(!aff)return;
+  const existing=document.querySelector('.whimsy-affirmation');if(existing)existing.remove();
+  const el=document.createElement('span');el.className='whimsy-affirmation';el.textContent=aff;
+  document.getElementById('rest-clock')?.after(el);setTimeout(()=>el?.remove(),2500);
+}
 function stopRest(){clearInterval(restTick);restTick=null;document.getElementById('rest-bar').classList.remove('active');document.getElementById('rest-spacer').classList.remove('active');}
 function skipRest(){stopRest();}
 function openRestSettings(){
@@ -722,6 +780,67 @@ window.addEventListener('load',()=>{
   if(w){try{const wo=JSON.parse(atob(decodeURIComponent(w)));if(wo.name&&wo.exerciseIds){setTimeout(()=>{const names=wo.exerciseIds.map(id=>{const ex=DB.exercises.find(e=>e.id===id)||(wo._exercises||[]).find(e=>e.id===id);return ex?ex.name:null;}).filter(Boolean).join(', ');if(confirm('Import workout "'+wo.name+'"?\n\n'+names+'\n\nTap OK to add.')){if(wo._exercises)wo._exercises.forEach(ex=>{if(!DB.exercises.find(e=>e.id===ex.id))DB.exercises.push(ex);});DB.workouts.push({id:uid(),name:wo.name,exerciseIds:wo.exerciseIds});DB.save();renderHome();alert('Added "'+wo.name+'"!');}},500);}}catch(e){}}
   window.history.replaceState({},'',window.location.pathname);
 });
+// ── WHIMSY EASTER EGGS ───────────────────────────────
+const TOASTS=["you're literally so strong 💅","bestie is LIFTING 🏋️","slay the weights babe","main character energy ✨","that set was iconic","the gym fears you","ur doing amazing sweetie 🌸","obsessed with ur dedication","not her skipping leg day 💪","iconic. legendary. that's you.","the bar KNOWS who's boss","girlboss but make it gainz"]
+const EMOJIS=['✨','🌸','💖','⭐','🦋','💫','🌟','💕','🎀','🔮','🌈','💜'];
+const AFFIRMATIONS=["slay","iconic","periodt","we love to see it","yes queen","that's the one","stunning","immaculate","chef's kiss","ur a legend"]
+let _whimsyToastTimer=null;
+function _isWhimsy(){return currentTheme()==='whimsy';}
+function _whimsyToast(){
+  if(!_isWhimsy())return;
+  const msg=TOASTS[Math.floor(Math.random()*TOASTS.length)];
+  const el=document.createElement('div');el.className='whimsy-toast';el.textContent=msg;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),3600);
+}
+function _whimsyEmojiRain(){
+  if(!_isWhimsy())return;
+  const count=4+Math.floor(Math.random()*5);
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='whimsy-emoji';
+      el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      el.style.left=(10+Math.random()*80)+'vw';
+      el.style.bottom='80px';
+      el.style.setProperty('--dur',(2.5+Math.random()*2)+'s');
+      document.body.appendChild(el);setTimeout(()=>el.remove(),5000);
+    },i*200);
+  }
+}
+function _whimsySparkBurst(x,y){
+  if(!_isWhimsy())return;
+  const count=6;
+  for(let i=0;i<count;i++){
+    const el=document.createElement('div');el.className='whimsy-spark';
+    el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+    el.style.left=x+'px';el.style.top=y+'px';
+    const angle=(i/count)*Math.PI*2;const dist=40+Math.random()*40;
+    el.style.setProperty('--tx',Math.cos(angle)*dist+'px');
+    el.style.setProperty('--ty',Math.sin(angle)*dist-30+'px');
+    el.style.setProperty('--dur',(.5+Math.random()*.5)+'s');
+    document.body.appendChild(el);setTimeout(()=>el.remove(),1200);
+  }
+}
+function _whimsyAffirmation(){
+  if(!_isWhimsy())return Math.random()>0.5?'':'';
+  if(Math.random()<0.35)return AFFIRMATIONS[Math.floor(Math.random()*AFFIRMATIONS.length)];
+  return '';
+}
+function _scheduleWhimsyEvents(){
+  if(!_isWhimsy())return;
+  // Toast every 45-120 seconds randomly
+  const toastDelay=(45+Math.random()*75)*1000;
+  _whimsyToastTimer=setTimeout(()=>{_whimsyToast();_scheduleWhimsyEvents();},toastDelay);
+  // Emoji rain every 60-180 seconds
+  const rainDelay=(60+Math.random()*120)*1000;
+  setTimeout(()=>{if(_isWhimsy())_whimsyEmojiRain();},rainDelay);
+}
+// Tap spark burst
+document.addEventListener('click',e=>{
+  if(!_isWhimsy())return;
+  if(Math.random()<0.25)_whimsySparkBurst(e.clientX,e.clientY);
+});
+// Kick off on load if whimsy
+setTimeout(()=>{if(_isWhimsy()){_scheduleWhimsyEvents();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
 DB.load();seedData();HL.load();
 // Write theme toggle immediately so page never looks blank
 try{renderHome();}catch(e){console.error(e);document.getElementById('home-content').innerHTML='<div class="theme-toggle"><button class="theme-btn" onclick="setTheme("dark")">🌙 Dark</button><button class="theme-btn" onclick="setTheme("light")">☀️ Light</button><button class="theme-btn" onclick="setTheme("whimsy")">✨ Whimsy</button></div><div class="empty-state">Something went wrong loading your data.<br>Go to <b>Manage</b> to check your workouts.</div>';}
