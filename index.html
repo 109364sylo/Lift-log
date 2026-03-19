@@ -1048,12 +1048,24 @@ if(Math.random()<0.25)_whimsySparkBurst(e.clientX,e.clientY);
 });
 // Kick off on load if whimsy
 setTimeout(()=>{if(_isWhimsy()){_scheduleWhimsyEvents();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
-DB.load();seedData();HL.load();
-// Write theme toggle immediately so page never looks blank
+// Visible error reporter
+window.onerror=function(msg,src,line,col,err){
+var el=document.getElementById(‘home-content’);
+if(el){
+var d=document.createElement(‘div’);
+d.style.cssText=‘background:#c00;color:#fff;padding:12px;margin:10px;border-radius:8px;font-size:11px;word-break:break-all;’;
+d.innerHTML=’<b>Error line ‘+line+’:</b><br>’+msg;
+el.appendChild(d);
+}
+return false;
+};
+try{DB.load();}catch(e){console.error(‘DB.load failed’,e);}
+try{seedData();}catch(e){console.error(‘seedData failed’,e);}
+try{HL.load();}catch(e){console.error(‘HL.load failed’,e);}
 try{renderHome();}catch(e){
 console.error(‘renderHome error:’,e);
 var el=document.getElementById(‘home-content’);
-if(el){el.innerHTML=’<div style="text-align:center;padding:40px 20px;color:#888;font-size:14px;">Something went wrong.<br>Go to <b>Manage</b> to check your data.</div>’;}
+if(el){el.innerHTML+=’<div style="background:#c00;color:#fff;padding:12px;margin:10px;border-radius:8px;font-size:11px;">renderHome crash: ‘+e.message+’</div>’;}
 }
 </script>
 
