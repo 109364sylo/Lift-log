@@ -13,7 +13,7 @@
 (function(){
   var t=localStorage.getItem('ironlog_theme')||'light';
   var V={
-    dark:{'--bg':'#1a1a1a','--bg2':'#222','--bg3':'#2a2a2a','--bg4':'#323232','--border':'#2e3a3e','--border2':'#3a4a50','--accent':'#00b4cc','--accent2':'#008fa0','--accent-text':'#fff','--text':'#f0f0f0','--text2':'#8a9ba0','--text3':'#4a6068','--red':'#f85149','--green':'#3fb950'},
+    dark:{'--bg':'#1a1a1a','--bg2':'#222','--bg3':'#2a2a2a','--bg4':'#323232','--border':'#2e3a3e','--border2':'#3a4a50','--accent':'#00b4cc','--accent2':'#008fa0','--accent-text':'#fff','--text':'#f0f0f0','--text2':'#8a9ba0','--text3':'#4a6068','--red':'#f85149','--green':'#2ecc71'},
     light:{'--bg':'#f0f0f2','--bg2':'#ffffff','--bg3':'#f5f5f7','--bg4':'#eaeaec','--border':'#e0e0e3','--border2':'#d0d0d5','--accent':'#1a3a5c','--accent2':'#122840','--accent-text':'#ffffff','--text':'#1a1a2e','--text2':'#4a5568','--text3':'#a0aec0','--red':'#cc2211','--green':'#007a3a'},
     whimsy:{'--bg':'#f0eaff','--bg2':'#ffffff','--bg3':'#e8deff','--bg4':'#ddd0ff','--border':'rgba(180,100,255,.25)','--border2':'rgba(180,100,255,.45)','--accent':'#d400a8','--accent2':'#a80082','--accent-text':'#ffffff','--text':'#2a0040','--text2':'#8040a0','--text3':'#b080c8','--red':'#cc1144','--green':'#007a3a'}
   };
@@ -170,7 +170,7 @@ canvas{width:100%!important;}
 .balance-item{display:flex;align-items:center;gap:6px;}
 .balance-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .balance-dot.ok{background:var(--green);}
-.balance-dot.low{background:var(--accent);}
+.balance-dot.low{background:#f5a800;}
 .balance-dot.needed{background:var(--red);}
 .balance-item-label{font-size:12px;font-weight:600;text-transform:uppercase;color:var(--text2);}
 .balance-item-count{font-size:11px;color:var(--text3);margin-left:auto;}
@@ -281,7 +281,7 @@ canvas{width:100%!important;}
 .muscle-target-input{width:60px!important;text-align:center;padding:7px!important;font-size:14px!important;}
 .gear-btn{position:absolute;top:8px;right:16px;background:none;border:none;cursor:pointer;color:var(--text3);padding:8px;}
 .gear-btn svg{width:22px;height:22px;}
-.help-btn{position:absolute;top:8px;right:16px;background:none;border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;cursor:pointer;color:var(--text3);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.help-btn{position:absolute;top:10px;right:16px;background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;font-weight:300;line-height:1;opacity:.6;}
 .help-section{margin-bottom:18px;}
 .help-section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
 .help-section-body{font-size:13px;color:var(--text2);line-height:1.6;}
@@ -1474,7 +1474,7 @@ function renderSettingsBody(){
   // About
   h+='<div class="settings-section">';
   h+='<div class="settings-section-title">About</div>';
-  h+='<div class="settings-row"><div class="settings-row-label">Version</div><div style="font-size:13px;color:var(--text2);">v0.2</div></div>';
+  h+='<div class="settings-row"><div class="settings-row-label">Version</div><div style="font-size:13px;color:var(--text2);">v0.2</div></div><div class="settings-row"><div><div class="settings-row-label">Check for Updates</div><div class="settings-row-sub">Force app to reload latest version</div></div><button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="checkForUpdates()">Update</button></div><div class="settings-row"><div class="settings-row-label">Updates</div><button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="checkForUpdates()">Check for Updates</button></div>';
   h+='<div style="margin-top:10px;">';
   var changelog=[
     {v:'v0.2',d:'2026-03-19',notes:['Settings panel with gear icon in Manage','Theme moved to Settings','Backup/Restore/Export moved to Settings','Default reps and sets preferences','Weekly set targets per muscle group','Feature toggles for scheduler, gaps, whimsy','Save (in progress) and End session buttons','Macro emojis hidden in dark/light modes','Light mode is now the default']},
@@ -1503,6 +1503,17 @@ function renderSettingsBody(){
     });
     tw.appendChild(tog);
   }
+}
+function checkForUpdates(){
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(regs){
+      regs.forEach(function(r){r.unregister();});
+    });
+    caches.keys().then(function(keys){
+      keys.forEach(function(k){caches.delete(k);});
+    });
+  }
+  setTimeout(function(){window.location.reload(true);},300);
 }
 function getNotifStatus(){
   if(!('Notification' in window))return'Not supported on this device';
@@ -1637,6 +1648,25 @@ function _whimsyAff(){if(!_isW())return'';return Math.random()<0.35?AFFS[Math.fl
 function _scheduleWhimsy(){if(!_isW())return;var td=(25+Math.random()*45)*1000;_whimsyToastTimer=setTimeout(function(){_whimsyToast();_scheduleWhimsy();},td);var rd=(60+Math.random()*120)*1000;setTimeout(function(){if(_isW())_whimsyRain();},rd);}
 document.addEventListener('click',function(e){if(!_isW())return;if(Math.random()<0.25)_whimsy_spark(e.clientX,e.clientY);});
 setTimeout(function(){if(_isW()){_scheduleWhimsy();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
+function checkForUpdates(){
+  if(!('serviceWorker' in navigator)){alert('Service worker not supported on this device.');return;}
+  navigator.serviceWorker.getRegistration().then(function(reg){
+    if(!reg){alert('No service worker registered. Try reloading the page.');return;}
+    reg.update().then(function(){
+      if(reg.waiting){
+        reg.waiting.postMessage({type:'SKIP_WAITING'});
+        setTimeout(function(){window.location.reload();},500);
+      } else {
+        // Force reload to get latest
+        caches.keys().then(function(keys){
+          return Promise.all(keys.map(function(k){return caches.delete(k);}));
+        }).then(function(){
+          window.location.reload(true);
+        });
+      }
+    });
+  });
+}
 DB.load();seedData();HL.load();renderHome();
 </script>
 </body>
