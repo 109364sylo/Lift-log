@@ -473,48 +473,60 @@ function renderHome(){
   const el=document.getElementById('home-content');
   if(!el)return;
   const t=currentTheme();
-  // Always write theme toggle first — this can never fail
-  const dA=t==='dark'?'active':'',lA=t==='light'?'active':'',wA=t==='whimsy'?'active':'';
-  const toggleHTML='<div class="theme-toggle">'
-    +'<button class="theme-btn '+dA+'" onclick="setTheme(&quot;dark&quot;)">🌙 Dark</button>'
-    +'<button class="theme-btn '+lA+'" onclick="setTheme(&quot;light&quot;)">☀️ Light</button>'
-    +'<button class="theme-btn '+wA+'" onclick="setTheme(&quot;whimsy&quot;)">✨ Whimsy</button>'
-    +'</div>';
-  el.innerHTML=toggleHTML;
-  try{
-    if(!DB.workouts||!DB.workouts.length){
-      el.innerHTML+='<div class="empty-state">No workouts yet.<br>Go to <b>Manage</b> to create one.</div>';
-      return;
-    }
-    let h='';
-    // Weekly coverage
-    try{
-      const weekAgo=Date.now()-(7*24*60*60*1000);
-      const wkSess=(DB.sessions||[]).filter(s=>s.date>=weekAgo);
-      const catSets={};const mCats=['Chest','Back','Shoulders','Legs','Arms','Core'];
-      mCats.forEach(c=>catSets[c]=0);
-      wkSess.forEach(s=>{(s.exercises||[]).forEach(ex=>{const dbEx=(DB.exercises||[]).find(e=>e.id===ex.exId);if(dbEx&&mCats.includes(dbEx.category))catSets[dbEx.category]=(catSets[dbEx.category]||0)+(ex.sets||[]).length;});});
-      h+='<div class="balance-card"><div class="balance-title">This Week</div><div class="balance-grid">';
-      mCats.forEach(c=>{const s=catSets[c]||0;const cls=s===0?'needed':s<6?'low':'ok';h+=`<div class="balance-item"><div class="balance-dot ${cls}"></div><div class="balance-item-label">${c}</div><div class="balance-item-count">${s}s</div></div>`;});
-      h+='</div></div>';
-    }catch(e){console.warn('balance error',e);}
-    // Suggestion
-    try{const sg=suggestWorkout();if(sg)h+=`<div class="suggest-card"><div class="suggest-label">Suggested Next</div><div class="suggest-name">${sg.name}</div><div class="suggest-reason">${sg.reason}</div></div>`;}catch(e){console.warn('suggest error',e);}
-    // Smart session button
-    h+='<button class="smart-session-btn" onclick="openSmartSession()">Build Me a Workout</button>';
-    h+='<div class="section-label">Your Workouts</div>';
-    // Workout cards
-    (DB.workouts||[]).forEach(wo=>{
-      try{
-        const last=(DB.sessions||[]).filter(s=>s.workoutId===wo.id).sort((a,b)=>b.date-a.date)[0];
-        h+=`<div class="workout-card" onclick="startSession('${wo.id}')"><div><div class="workout-card-name">${wo.name||'Unnamed'}</div><div class="workout-card-meta">${(wo.exerciseIds||[]).length} exercises · ${last?'Last: '+fmtDate(last.date):'Never done'}</div></div><div style="color:var(--text3);font-size:22px;">›</div></div>`;
-      }catch(e){console.warn('workout card error',e);}
-    });
-    el.innerHTML+=h;
-  }catch(e){
-    console.error('renderHome data error',e);
-    el.innerHTML+='<div class="empty-state">Error loading data.<br>Go to <b>Manage</b> to check your workouts.</div>';
+  const dA=t==='dark'?'active':'';
+  const lA=t==='light'?'active':'';
+  const wA=t==='whimsy'?'active':'';
+  // Build theme toggle safely
+  const tt=document.createElement('div');tt.className='theme-toggle';
+  ['dark','light','whimsy'].forEach(function(theme){
+    const btn=document.createElement('button');
+    btn.className='theme-btn'+(t===theme?' active':'');
+    btn.textContent=theme==='dark'?'🌙 Dark':theme==='light'?'☀️ Light':'✨ Whimsy';
+    btn.onclick=function(){setTheme(theme);};
+    tt.appendChild(btn);
+  });
+  el.innerHTML='';
+  el.appendChild(tt);
+  if(!DB||!DB.workouts||!DB.workouts.length){
+    el.innerHTML+='<div class="empty-state">No workouts yet.<br>Go to <b>Manage</b> to create one.</div>';
+    return;
   }
+  try{
+    const weekAgo=Date.now()-(7*24*60*60*1000);
+    const wkSess=(DB.sessions||[]).filter(function(s){return s.date>=weekAgo;});
+    const catSets={};
+    const mCats=['Chest','Back','Shoulders','Legs','Arms','Core'];
+    mCats.forEach(function(c){catSets[c]=0;});
+    wkSess.forEach(function(s){
+      (s.exercises||[]).forEach(function(ex){
+        const dbEx=(DB.exercises||[]).find(function(e){return e.id===ex.exId;});
+        if(dbEx&&mCats.includes(dbEx.category))catSets[dbEx.category]=(catSets[dbEx.category]||0)+(ex.sets||[]).length;
+      });
+    });
+    let bh='<div class="balance-card"><div class="balance-title">This Week</div><div class="balance-grid">';
+    mCats.forEach(function(c){
+      const s=catSets[c]||0;
+      const cls=s===0?'needed':s<6?'low':'ok';
+      bh+='<div class="balance-item"><div class="balance-dot '+cls+'"></div><div class="balance-item-label">'+c+'</div><div class="balance-item-count">'+s+'s</div></div>';
+    });
+    bh+='</div></div>';
+    el.innerHTML+=bh;
+  }catch(e){console.warn('balance error',e);}
+  try{
+    const sg=suggestWorkout();
+    if(sg){
+      el.innerHTML+='<div class="suggest-card"><div class="suggest-label">Suggested Next</div><div class="suggest-name">'+sg.name+'</div><div class="suggest-reason">'+sg.reason+'</div></div>';
+    }
+  }catch(e){console.warn('suggest error',e);}
+  el.innerHTML+='<button class="smart-session-btn" onclick="openSmartSession()">Build Me a Workout</button>';
+  el.innerHTML+='<div class="section-label">Your Workouts</div>';
+  (DB.workouts||[]).forEach(function(wo){
+    try{
+      const last=(DB.sessions||[]).filter(function(s){return s.workoutId===wo.id;}).sort(function(a,b){return b.date-a.date;})[0];
+      const meta=(wo.exerciseIds||[]).length+' exercises · '+(last?'Last: '+fmtDate(last.date):'Never done');
+      el.innerHTML+='<div class="workout-card" onclick="startSession(\"'+wo.id+'\")"><div><div class="workout-card-name">'+wo.name+'</div><div class="workout-card-meta">'+meta+'</div></div><div style="color:var(--text3);font-size:22px;">›</div></div>';
+    }catch(e){console.warn('card error',e);}
+  });
 }
 
 function suggestWorkout(){
