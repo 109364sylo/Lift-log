@@ -255,9 +255,20 @@ canvas{width:100%!important;}
 </head>
 <body>
 <script>
-// CHANGE 1: Service worker — comment out the line below to disable if needed
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
+// Service worker disabled — uncomment to re-enable once caching issues resolved
+// if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
+
+// Unregister any existing service workers and clear caches
+if(‘serviceWorker’ in navigator){
+navigator.serviceWorker.getRegistrations().then(function(regs){
+regs.forEach(function(r){r.unregister();});
+});
+caches.keys().then(function(keys){
+keys.forEach(function(k){caches.delete(k);});
+});
+}
 </script>
+
 <div class="rest-bar" id="rest-bar">
   <div class="rest-label">REST</div>
   <div class="rest-clock" id="rest-clock">1:30</div>
