@@ -249,6 +249,9 @@ canvas{width:100%!important;}
 .macro-input-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .macro-input{width:68px!important;text-align:center;font-size:16px!important;padding:9px 6px!important;}
 .macro-add-btn{background:var(--accent);color:var(--accent-text);border:none;border-radius:8px;width:40px;height:40px;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.macro-sub-btn{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);border-radius:8px;width:40px;height:40px;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.macro-sub-btn:active{background:var(--red);color:#fff;border-color:var(--red);}
+[data-theme="whimsy"] .macro-sub-btn:active{background:#cc1144;border-color:#cc1144;}
 .macro-add-btn:active{opacity:.8;}
 .pbar-row{display:flex;align-items:center;gap:10px;padding:5px 0;}
 .pbar-date{font-size:13px;color:var(--text2);width:56px;flex-shrink:0;}
@@ -278,6 +281,11 @@ canvas{width:100%!important;}
 .muscle-target-input{width:60px!important;text-align:center;padding:7px!important;font-size:14px!important;}
 .gear-btn{position:absolute;top:8px;right:16px;background:none;border:none;cursor:pointer;color:var(--text3);padding:8px;}
 .gear-btn svg{width:22px;height:22px;}
+.help-btn{position:absolute;top:8px;right:16px;background:none;border:none;cursor:pointer;color:var(--text3);padding:8px;}
+.help-btn svg{width:22px;height:22px;}
+.help-section{margin-bottom:18px;}
+.help-section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.help-section-body{font-size:13px;color:var(--text2);line-height:1.6;}
 .save-end-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .btn-save-progress{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);border-radius:6px;padding:6px 12px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
 .btn-save-progress:active{border-color:var(--accent);color:var(--accent);}
@@ -315,7 +323,7 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
   <button class="rest-skip" onclick="skipRest()">Done</button>
 </div>
 <div class="rest-spacer" id="rest-spacer"></div>
-<div id="page-home" class="page active"><div class="page-header">LIFT <span>LOG</span></div><div id="home-content"></div></div>
+<div id="page-home" class="page active"><div class="page-header" style="position:relative;">LIFT <span>LOG</span><button class="help-btn" onclick="openModal('m-help')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></div><div id="home-content"></div></div>
 <div id="page-session" class="page"><div id="session-header-slot"></div><div id="session-body-slot"></div></div>
 <div id="page-history" class="page"><div class="page-header">HISTORY</div><div id="history-content"></div></div>
 <div id="page-health" class="page"><div class="page-header">HEALTH <span>LOG</span></div><div id="health-content"></div></div>
@@ -447,6 +455,38 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
   <div class="modal-title" id="sched-pick-title">Choose Workout</div>
   <div id="sched-pick-list"></div>
   <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="clearSchedDay()">Clear This Day</button>
+</div></div>
+<div class="modal-overlay" id="m-help"><div class="modal" style="max-height:92vh;">
+  <button class="modal-close" onclick="closeModal('m-help')">✕</button>
+  <div class="modal-title">How It Works</div>
+  <div class="help-section">
+    <div class="help-section-title">Getting Started</div>
+    <div class="help-section-body">Tap any workout card on the home screen to start a session. No workouts yet? Go to <b>Manage → New Workout</b> to build one, or tap <b>Build Me a Workout</b> for a smart suggestion.</div>
+  </div>
+  <div class="help-section">
+    <div class="help-section-title">Settings ⚙</div>
+    <div class="help-section-body">Tap the gear icon in the top right of Manage. Change your theme, set default reps and sets, adjust weekly muscle targets, manage backups, and toggle features on or off.</div>
+  </div>
+  <div class="help-section">
+    <div class="help-section-title">Logging a Session</div>
+    <div class="help-section-body">Enter weight and reps for each set. Tap <b>REST</b> to start the rest timer — it buzzes and notifies you when done. Tap <b>Save</b> to save progress mid-session, or <b>End</b> to finish and close.</div>
+  </div>
+  <div class="help-section">
+    <div class="help-section-title">Rest Timer</div>
+    <div class="help-section-body">Tap the timer display in the session header to change the duration. Duration can also be set in Settings.</div>
+  </div>
+  <div class="help-section">
+    <div class="help-section-title">Building a Workout</div>
+    <div class="help-section-body">Manage → New Workout. The <b>Programming Gaps</b> strip at the top shows muscles underrepresented in your existing workouts — tap to add an exercise for that muscle instantly.</div>
+  </div>
+  <div class="help-section">
+    <div class="help-section-title">Weekly Schedule</div>
+    <div class="help-section-body">The schedule card on the home screen lets you assign workouts to days. The colored dot shows your weekly muscle coverage at a glance — tap it to see which muscles are light or missing.</div>
+  </div>
+  <div class="help-section">
+    <div class="help-section-title">Health Tab</div>
+    <div class="help-section-body">Log macros, body weight, and sleep. Tap <b>Targets</b> in the daily card to set protein and calorie goals. Use + and − to add or subtract from today's totals.</div>
+  </div>
 </div></div>
 <div class="modal-overlay" id="m-settings"><div class="modal" style="max-height:92vh;">
   <button class="modal-close" onclick="closeModal('m-settings')">✕</button>
@@ -734,7 +774,7 @@ function renderSessExPicker(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
@@ -823,7 +863,7 @@ function renderBars(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
@@ -854,7 +894,7 @@ function renderHeatmap(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
@@ -882,7 +922,7 @@ function renderPRBoard(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
@@ -942,7 +982,7 @@ function renderHealth(){
   if(targets.calories>0){var cpct=Math.min((today.calories||0)/targets.calories*100,100).toFixed(1);h+='<div class="target-row"><div class="target-label">Calories</div><div class="target-track"><div class="target-fill'+((today.calories||0)>=targets.calories?' over':'')+'" style="width:'+cpct+'%"></div></div><div class="target-nums">'+(today.calories||0)+'/'+targets.calories+'</div></div>';}
   h+='</div>';
   h+='<div class="section-label">Add to Today</div>';
-  allM.forEach(function(m){h+='<div class="macro-row"><div class="macro-row-emoji">'+m.emoji+'</div><div class="macro-row-info"><div class="macro-row-label">'+m.label+'</div><div class="macro-row-unit">'+m.unit+'</div></div><div class="macro-input-wrap"><input type="number" inputmode="decimal" class="macro-input" id="mi-'+m.key+'" value="10" min="0" step="any"><button class="macro-add-btn" onclick="addMacro(\''+m.key+'\')">+</button></div></div>';});
+  allM.forEach(function(m){h+='<div class="macro-row"><div class="macro-row-emoji">'+m.emoji+'</div><div class="macro-row-info"><div class="macro-row-label">'+m.label+'</div><div class="macro-row-unit">'+m.unit+'</div></div><div class="macro-input-wrap"><button class="macro-sub-btn" onclick="subMacro(\'\''+m.key+'\'\')">-</button><input type="number" inputmode="decimal" class="macro-input" id="mi-'+m.key+'" value="10" min="0" step="any"><button class="macro-add-btn" onclick="addMacro(\''+m.key+'\')">+</button></div></div>';});
   h+='<button class="btn btn-ghost" style="width:100%;margin-top:4px;font-size:12px;" onclick="promptAddCustomMacro()">+ Add Custom Tracker</button>';
   var todayW=HL.weight[todayK];var recentW=getRecentDays(30).filter(function(d){return HL.weight[d]!=null;}).map(function(d){return{date:d,val:HL.weight[d]};});
   h+='<div class="section-label">Body Weight</div><div class="dashboard-card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;"><input type="number" inputmode="decimal" id="weight-input" placeholder="lbs" value="'+(todayW||'')+'" step="0.1" style="flex:1;"><button class="macro-add-btn" onclick="logWeight()">✓</button></div>';
@@ -978,6 +1018,7 @@ function drawTrendChart(id,data){
   ctx.fillStyle=C.label;ctx.font='8px Barlow,sans-serif';ctx.textAlign='center';ctx.fillText((d0.getMonth()+1)+'/'+d0.getDate(),px(0),H-4);ctx.fillText((d1.getMonth()+1)+'/'+d1.getDate(),px(data.length-1),H-4);
 }
 function addMacro(key){var inp=document.getElementById('mi-'+key);var val=parseFloat(inp?inp.value:0)||0;if(val<0)return;HL.addToday(key,val);renderHealth();}
+function subMacro(key){var inp=document.getElementById('mi-'+key);var val=parseFloat(inp?inp.value:0)||0;if(val<=0)return;var k=todayKey();var d=HL.getDay(k);d[key]=Math.max(0,parseFloat(((d[key]||0)-val).toFixed(1)));HL.save();renderHealth();}
 function logWeight(){var v=parseFloat(document.getElementById('weight-input').value);if(!v||v<0||v>1000)return;HL.logWeight(v);renderHealth();}
 function logSleep(){var v=parseFloat(document.getElementById('sleep-input').value);if(v==null||isNaN(v)||v<0||v>24)return;HL.logSleep(v);renderHealth();}
 function confirmResetMacros(){if(!confirm("Reset today's macros?"))return;HL.resetToday();renderHealth();}
@@ -1019,7 +1060,7 @@ function renderManage(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
@@ -1355,7 +1396,7 @@ function clearSchedule(){if(!confirm('Clear entire schedule?'))return;saveSchedu
 // ── SETTINGS & PREFERENCES ──────────────────────────
 var PREFS_KEY='liftlog_prefs';
 var DEFAULT_PREFS={
-  defaultReps:10,
+  defaultReps:8,
   defaultSets:3,
   muscleTargets:{Chest:10,Back:10,Shoulders:10,Quads:10,Hamstrings:10,Glutes:10,Core:10,Arms:10},
   features:{whimsy:true,scheduler:true,programmingGaps:true},
@@ -1455,7 +1496,7 @@ function renderSettingsBody(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
@@ -1513,7 +1554,7 @@ function renderSmartPreview(){
     var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';
     [{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}].forEach(function(th){
       var btn=document.createElement('button');
-      btn.className='theme-btn'+(t===th.k?' active':'');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
       btn.textContent=th.l;
       btn.setAttribute('data-tk',th.k);
       btn.onclick=function(){setThemeFromSettings(this.getAttribute('data-tk'));};
