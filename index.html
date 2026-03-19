@@ -252,6 +252,10 @@ canvas{width:100%!important;}
 </style>
 </head>
 <body>
+<script>
+// SERVICE WORKER — comment out the line below to disable if needed
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
+</script>
 <div class="rest-bar" id="rest-bar">
   <div class="rest-label">REST</div>
   <div class="rest-clock" id="rest-clock">1:30</div>
@@ -1016,9 +1020,28 @@ window.addEventListener('load',function(){
   window.history.replaceState({},'',window.location.pathname);
 });
 var _whimsyToastTimer=null;
-var TOASTS=["you're literally so strong 💅","bestie is LIFTING 🏋️","slay the weights babe","main character energy ✨","that set was iconic","the gym fears you","ur doing amazing sweetie 🌸","obsessed with ur dedication","iconic. legendary. that's you.","the bar KNOWS who's boss","girlboss but make it gainz"];
-var EMOJIS=["✨","🌸","💖","⭐","🦋","💫","🌟","💕","🎀","🔮","🌈","💜"];
-var AFFS=["slay","iconic","periodt","we love to see it","yes queen","stunning","immaculate","ur a legend","chef's kiss","that's the one"];
+var TOASTS=[
+  "you're literally so strong 💅","bestie is LIFTING 🏋️","slay the weights babe",
+  "main character energy ✨","that set was iconic","the gym fears you",
+  "ur doing amazing sweetie 🌸","obsessed with ur dedication",
+  "iconic. legendary. that's you.","the bar KNOWS who's boss","girlboss but make it gainz",
+  "that's so slay coded","she's built different fr","the gains are immaculate",
+  "not her resting between sets 💅","serving looks AND strength",
+  "that form was giving everything","the dumbbells are scared of you",
+  "main character has entered the gym","BRO YOU'RE BUILT DIFFERENT",
+  "GET SOME 🔥","YEAH BUDDY","LIGHT WEIGHT BABY","ANOTHER ONE",
+  "NO DAYS OFF KING","SWOLE PATROL ACTIVATED","IT'S NOT GONNA LIFT ITSELF BRO",
+  "she's a gym bro now and honestly good for her",
+  "the barbell said yes queen","king behavior tbh",
+  "legend behavior detected","this is your villain arc and we are HERE for it",
+  "the weights respect you and so do we","not a warm-up. a STATEMENT.",
+  "ur literally built for this","that rep was academy award worthy"
+];
+var EMOJIS=["✨","🌸","💖","⭐","🦋","💫","🌟","💕","🎀","🔮","🌈","💜","🏆","💪","🔥","👑"];
+var AFFS=["slay","iconic","periodt","we love to see it","yes queen","stunning",
+  "immaculate","ur a legend","chef's kiss","that's the one","built different",
+  "GET SOME","YEAH BUDDY","king behavior","villain arc activated",
+  "light weight","swole patrol","no days off","absolutely feral","unreal"];
 function _isW(){return currentTheme()==='whimsy';}
 function _whimsyToast(){if(!_isW())return;var el=document.createElement('div');el.className='whimsy-toast';el.textContent=TOASTS[Math.floor(Math.random()*TOASTS.length)];document.body.appendChild(el);setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},3600);}
 function _whimsyRain(){if(!_isW())return;for(var i=0;i<6;i++){(function(delay){setTimeout(function(){var el=document.createElement('div');el.className='whimsy-emoji';el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];el.style.left=(10+Math.random()*80)+'vw';el.style.bottom='80px';el.style.setProperty('--dur',(2.5+Math.random()*2)+'s');document.body.appendChild(el);setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},5000);},delay);})(i*200);}
