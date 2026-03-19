@@ -1,10 +1,44 @@
-// Self-destructing service worker — clears all caches and unregisters
-self.addEventListener(‘install’, () => self.skipWaiting());
-self.addEventListener(‘activate’, e => {
+// LIFT LOG Service Worker v2
+// ROLLBACK: comment out the registration line in index.html
+// CACHE BUST: bump the version number below
+var CACHE = ‘liftlog-v2’;
+var ASSETS = [’/Lift-log/’, ‘/Lift-log/index.html’];
+
+self.addEventListener(‘install’, function(e) {
 e.waitUntil(
-caches.keys()
-.then(keys => Promise.all(keys.map(k => caches.delete(k))))
-.then(() => self.registration.unregister())
+caches.open(CACHE).then(function(cache) {
+return cache.addAll(ASSETS);
+}).then(function() { return self.skipWaiting(); })
 );
 });
-self.addEventListener(‘fetch’, e => e.respondWith(fetch(e.request)));
+
+self.addEventListener(‘activate’, function(e) {
+e.waitUntil(
+caches.keys().then(function(keys) {
+return Promise.all(keys.filter(function(k) { return k !== CACHE; }).map(function(k) { return caches.delete(k); }));
+}).then(function() { return self.clients.claim(); })
+);
+});
+
+// NETWORK FIRST — always tries network so new deploys always get through
+// Falls back to cache only when offline
+self.addEventListener(‘fetch’, function(e) {
+if(e.request.method !== ‘GET’) return;
+e.respondWith(
+fetch(e.request).then(function(res) {
+if(res.ok) {
+var clone = res.clone();
+caches.open(CACHE).then(function(cache) { cache.put(e.request, clone); });
+}
+return res;
+}).catch(function() {
+return caches.match(e.request);
+})
+);
+});
+
+// Rest timer notification click handler
+self.addEventListener(‘notificationclick’, function(e) {
+e.notification.close();
+e.waitUntil(clients.openWindow(’/Lift-log/’));
+});
