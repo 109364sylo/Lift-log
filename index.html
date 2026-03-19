@@ -1019,7 +1019,11 @@ if(Math.random()<0.25)_whimsySparkBurst(e.clientX,e.clientY);
 setTimeout(()=>{if(_isWhimsy()){_scheduleWhimsyEvents();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
 DB.load();seedData();HL.load();
 // Write theme toggle immediately so page never looks blank
-try{renderHome();}catch(e){console.error(e);document.getElementById(‘home-content’).innerHTML=’<div class="theme-toggle"><button class=“theme-btn” onclick=“setTheme(“dark”)”>🌙 Dark</button><button class=“theme-btn” onclick=“setTheme(“light”)”>☀️ Light</button><button class=“theme-btn” onclick=“setTheme(“whimsy”)”>✨ Whimsy</button></div><div class="empty-state">Something went wrong loading your data.<br>Go to <b>Manage</b> to check your workouts.</div>’;}
+try{renderHome();}catch(e){
+console.error(‘renderHome error:’,e);
+var el=document.getElementById(‘home-content’);
+if(el){el.innerHTML=’<div style="text-align:center;padding:40px 20px;color:#888;font-size:14px;">Something went wrong.<br>Go to <b>Manage</b> to check your data.</div>’;}
+}
 </script>
 
 </body>
