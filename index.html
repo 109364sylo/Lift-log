@@ -584,7 +584,7 @@ if(!q){
 // No search — show by category as before
 const cats=[…new Set(avail.map(e=>e.category))];let h=’’;
 if(!avail.length){h=’<p style="color:var(--text2);padding:10px 0;">No exercises found.</p>’;}
-else{cats.forEach(cat=>{const exs=avail.filter(e=>e.category===cat);if(!exs.length)return;const key=‘s_’+cat;const open=!!collapsedPickerCats[key];const kid=key.replace(/\W/g,’*’);h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{h+=`<div class="exercise-order-item" onclick="addExToSession('${ex.id}')"><div class="exercise-order-name">${ex.name}</div><div style="color:var(--accent);font-size:20px;">+</div></div>`;});h+=`</div>`;});}
+else{cats.forEach(cat=>{const exs=avail.filter(e=>e.category===cat);if(!exs.length)return;const key=‘s_’+cat;const open=!!collapsedPickerCats[key];const kid=key.replace(/[^a-z0-9]/gi,’*’);h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{h+=`<div class="exercise-order-item" onclick="addExToSession('${ex.id}')"><div class="exercise-order-name">${ex.name}</div><div style="color:var(--accent);font-size:20px;">+</div></div>`;});h+=`</div>`;});}
 document.getElementById(‘session-ex-picker’).innerHTML=h;
 return;
 }
@@ -778,7 +778,7 @@ h+=`</div><button class="btn btn-secondary" onclick="openModal('modal-add-cat')"
 h+=`<div class="section-label">Exercise Library</div>`;
 const cats=DB.categories.filter(c=>DB.exercises.some(e=>e.category===c));
 cats.forEach(cat=>{
-const exList=DB.exercises.filter(e=>e.category===cat);const open=!!collapsedCats[cat];const kid=cat.replace(/\W/g,’*’);
+const exList=DB.exercises.filter(e=>e.category===cat);const open=!!collapsedCats[cat];const kid=cat.replace(/[^a-z0-9]/gi,’*’);
 h+=`<div class="cat-header" onclick="toggleLibCat('${cat}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exList.length} exercises</div></div><span class="cat-arrow ${open?'open':''}" id="lca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="lcb-${kid}">`;
 exList.forEach(ex=>{const primary=(ex.muscles_primary||[]);const secondary=(ex.muscles_secondary||[]);h+=`<div class="exercise-list-item"><div style="flex:1;"><div class="exercise-list-name">${ex.name}</div><div class="muscle-pills">${primary.map(m=>`<span class="muscle-pill primary">${m}</span>`).join('')}${secondary.map(m=>`<span class="muscle-pill">${m}</span>`).join('')}</div></div><button class="btn-edit-subtle" onclick="openEditExercise('${ex.id}')">Edit</button><button class="btn-delete-subtle" onclick="delEx('${ex.id}')">Remove</button></div>`;});
 h+=`</div>`;
@@ -809,7 +809,7 @@ function openAddWorkout(){selectedExIds=[];document.getElementById(‘new-wo-nam
 function *buildPickerHTML(exercises, q, selectedIds, toggleFn, pickerCatKey){
 if(!q){
 const cats=[…new Set(exercises.map(e=>e.category))];let h=’’;
-cats.forEach(cat=>{const exs=exercises.filter(e=>e.category===cat);if(!exs.length)return;const key=pickerCatKey+cat;const open=!!collapsedPickerCats[key];const kid=key.replace(/\W/g,’*’);h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{const s=selectedIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="${toggleFn}('${ex.id}')" style="${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});h+=`</div>`;});
+cats.forEach(cat=>{const exs=exercises.filter(e=>e.category===cat);if(!exs.length)return;const key=pickerCatKey+cat;const open=!!collapsedPickerCats[key];const kid=key.replace(/[^a-z0-9]/gi,’*’);h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{const s=selectedIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="${toggleFn}('${ex.id}')" style="${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});h+=`</div>`;});
 return h;
 }
 const ql=q.toLowerCase();
