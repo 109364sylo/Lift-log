@@ -14,7 +14,7 @@
   var t=localStorage.getItem('ironlog_theme')||'dark';
   var V={
     dark:{'--bg':'#0a0a0a','--bg2':'#111','--bg3':'#1a1a1a','--bg4':'#222','--border':'#2a2a2a','--border2':'#333','--accent':'#e8ff00','--accent2':'#b8cc00','--accent-text':'#000','--text':'#f0f0f0','--text2':'#888','--text3':'#555','--red':'#ff4444','--green':'#44ff88'},
-    light:{'--bg':'#f0f0f2','--bg2':'#ffffff','--bg3':'#f5f5f7','--bg4':'#eaeaec','--border':'#e0e0e3','--border2':'#d0d0d5','--accent':'#111111','--accent2':'#333333','--accent-text':'#ffffff','--text':'#111111','--text2':'#555555','--text3':'#aaaaaa','--red':'#cc2211','--green':'#007a3a'},
+    light:{'--bg':'#f0f0f2','--bg2':'#ffffff','--bg3':'#f5f5f7','--bg4':'#eaeaec','--border':'#e0e0e3','--border2':'#d0d0d5','--accent':'#1a3a5c','--accent2':'#122840','--accent-text':'#ffffff','--text':'#1a1a2e','--text2':'#4a5568','--text3':'#a0aec0','--red':'#cc2211','--green':'#007a3a'},
     whimsy:{'--bg':'#f0eaff','--bg2':'#ffffff','--bg3':'#e8deff','--bg4':'#ddd0ff','--border':'rgba(180,100,255,.25)','--border2':'rgba(180,100,255,.45)','--accent':'#d400a8','--accent2':'#a80082','--accent-text':'#ffffff','--text':'#2a0040','--text2':'#8040a0','--text3':'#b080c8','--red':'#cc1144','--green':'#007a3a'}
   };
   window._TV=V;
@@ -60,7 +60,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font
 .btn{border:none;border-radius:var(--radius);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
 .btn-primary{background:var(--accent);color:var(--accent-text);padding:13px 20px;font-size:15px;width:100%;}
 .btn-primary:active{opacity:.85;}
-.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border2);padding:10px 16px;font-size:13px;}
+.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border2);padding:11px 16px;font-size:13px;letter-spacing:.04em;}
 .btn-ghost{background:none;color:var(--text2);padding:8px 12px;font-size:13px;border:1px solid var(--border);}
 .btn-danger{background:var(--red);color:#fff;padding:8px 14px;font-size:12px;}
 input,select{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:10px 12px;outline:none;width:100%;-webkit-appearance:none;}
@@ -73,11 +73,11 @@ label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;l
 .search-field{position:relative;margin-bottom:12px;}
 .search-field input{padding-left:36px;}
 .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none;}
-.workout-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;}
+.workout-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.12);}
 .workout-card:active{border-color:var(--accent);}
 .workout-card-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
 .workout-card-meta{font-size:12px;color:var(--text2);margin-top:3px;}
-.section-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin:18px 0 8px;}
+.section-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin:20px 0 10px;border-bottom:1px solid var(--border);padding-bottom:6px;}
 .empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px;line-height:1.6;}
 .divider{height:1px;background:var(--border);margin:14px 0;}
 .pr-badge{display:inline-block;background:var(--accent);color:var(--accent-text);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:900;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-left:6px;}
@@ -125,7 +125,7 @@ label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;l
 .rest-timer-label{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
 .rest-timer-sub{font-size:12px;color:var(--text2);margin-top:2px;}
 .rest-timer-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--accent);}
-.history-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;cursor:pointer;}
+.history-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.1);}
 .history-item-header{display:flex;justify-content:space-between;align-items:flex-start;}
 .history-item-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
 .history-item-date{font-size:12px;color:var(--accent);white-space:nowrap;margin-left:8px;cursor:pointer;text-decoration:underline dotted;}
@@ -135,7 +135,7 @@ label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;l
 .history-ex-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--text2);margin:10px 0 4px;}
 .history-set-row{display:flex;gap:12px;font-size:13px;padding:2px 0;}
 .history-set-row span:first-child{color:var(--text3);width:40px;}
-.graph-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;}
+.graph-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.1);}
 canvas{width:100%!important;}
 .exercise-list-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
 .exercise-list-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
@@ -159,7 +159,7 @@ canvas{width:100%!important;}
 .order-arrows{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
 .order-arrow{background:none;border:1px solid var(--border2);border-radius:4px;color:var(--text3);font-size:11px;cursor:pointer;width:26px;height:22px;display:flex;align-items:center;justify-content:center;}
 .order-arrow:active{background:var(--accent);color:var(--accent-text);}
-.balance-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
+.balance-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.1);}
 .balance-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
 .balance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .balance-item{display:flex;align-items:center;gap:6px;}
@@ -167,9 +167,18 @@ canvas{width:100%!important;}
 .balance-dot.ok{background:var(--green);}
 .balance-dot.low{background:var(--accent);}
 .balance-dot.needed{background:var(--red);}
+[data-theme="whimsy"] .balance-dot.ok{background:#00c44f;}
+[data-theme="whimsy"] .balance-dot.low{background:#f5a800;}
+[data-theme="whimsy"] .balance-dot.needed{background:#e8003d;}
 .balance-item-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;color:var(--text2);}
 .balance-item-count{font-size:11px;color:var(--text3);margin-left:auto;}
-.suggest-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
+.suggest-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.smart-session-btn{background:var(--accent);color:var(--accent-text);border:none;border-radius:var(--radius);padding:13px 20px;font-size:15px;width:100%;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-bottom:10px;}
+.smart-session-btn:active{opacity:.85;}
+[data-theme="whimsy"] .smart-session-btn{background:linear-gradient(135deg,#d400a8,#ff69cc);color:#fff;}
+.picker-row{display:flex;gap:8px;margin-bottom:12px;}
+.picker-pill{flex:1;border:2px solid var(--border2);border-radius:30px;padding:10px 8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:center;cursor:pointer;background:none;color:var(--text2);}
+.picker-pill.active{border-color:var(--accent);color:var(--accent);background:var(--bg3);}
 .suggest-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
 .suggest-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--accent);}
 .suggest-reason{font-size:12px;color:var(--text2);margin-top:3px;}
@@ -182,18 +191,22 @@ canvas{width:100%!important;}
 .bar-fill{height:100%;background:var(--accent);border-radius:5px;}
 .bar-val{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--text2);width:36px;text-align:right;flex-shrink:0;}
 .heatmap-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;}
-.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:4px;}
-.heatmap-day{aspect-ratio:1;border-radius:3px;background:var(--bg3);}
+.heatmap-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:0;}
+.heatmap-toggle-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);background:none;border:none;cursor:pointer;padding:0;}
+.heatmap-body{overflow:hidden;transition:max-height .3s ease;max-height:0;}
+.heatmap-body.open{max-height:200px;}
+.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px;}
+.heatmap-day{height:10px;border-radius:2px;background:var(--bg3);}
 .heatmap-day.trained{background:var(--accent);}
 .heatmap-day.today{outline:2px solid var(--accent);outline-offset:1px;}
-.heatmap-labels{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:2px;}
+.heatmap-labels{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:2px;margin-top:8px;}
 .heatmap-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text3);text-align:center;}
 .pr-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
 .pr-row:last-child{border-bottom:none;}
 .pr-row-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;}
 .pr-row-weight{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--accent);}
 .pr-row-date{font-size:11px;color:var(--text3);margin-top:1px;}
-.dashboard-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+.dashboard-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.1);}
 .dashboard-card-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 .target-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .target-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text2);width:80px;flex-shrink:0;}
@@ -225,6 +238,10 @@ canvas{width:100%!important;}
 .share-link-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-top:12px;word-break:break-all;font-family:monospace;font-size:12px;color:var(--text2);line-height:1.5;}
 
 /* Whimsy Easter Eggs */
+.whimsy-confetti{position:fixed;top:-10px;pointer-events:none;z-index:999;width:10px;height:10px;border-radius:2px;animation:confetti-fall var(–dur,3s) ease forwards;}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+.session-name-whimsy{animation:name-entrance .6s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes name-entrance{0%{opacity:0;transform:scale(.3) rotate(-5deg);}60%{transform:scale(1.1) rotate(2deg);}80%{transform:scale(.97) rotate(-1deg);}100%{opacity:1;transform:scale(1) rotate(0deg);}}
 .whimsy-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#d400a8,#ff69cc);color:#fff;font-family:‘Fredoka One’,sans-serif;font-size:16px;padding:10px 22px;border-radius:30px;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(212,0,168,.4);animation:whimsy-rise 3.5s ease forwards;}
 @keyframes whimsy-rise{0%{opacity:0;transform:translateX(-50%) translateY(20px);}15%{opacity:1;transform:translateX(-50%) translateY(0);}70%{opacity:1;transform:translateX(-50%) translateY(-10px);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
 .whimsy-emoji{position:fixed;pointer-events:none;z-index:998;font-size:24px;animation:whimsy-float var(–dur,3s) ease forwards;}
@@ -319,13 +336,13 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
 </div></div>
 <div class="modal-overlay" id="modal-backup"><div class="modal">
   <button class="modal-close" onclick="closeModal('modal-backup')">✕</button>
-  <div class="modal-title">💾 Backup</div>
+  <div class="modal-title">Backup</div>
   <textarea id="backup-text" readonly style="height:200px;font-family:monospace;font-size:11px;resize:none;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:12px;width:100%;word-break:break-all;"></textarea>
   <button class="btn btn-primary" style="margin-top:12px;" onclick="selectBackupText()">Select All & Copy</button>
 </div></div>
 <div class="modal-overlay" id="modal-restore"><div class="modal">
   <button class="modal-close" onclick="closeModal('modal-restore')">✕</button>
-  <div class="modal-title">📥 Restore</div>
+  <div class="modal-title">Restore</div>
   <textarea id="restore-text" placeholder="Paste backup JSON here..." style="height:160px;font-family:monospace;font-size:11px;resize:none;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:12px;width:100%;word-break:break-all;"></textarea>
   <div id="restore-preview" style="margin-top:10px;"></div>
   <button class="btn btn-secondary" style="width:100%;margin-top:10px;" onclick="previewRestore()">Preview</button>
@@ -345,7 +362,7 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
 </div></div>
 <div class="modal-overlay" id="modal-rest-settings"><div class="modal">
   <button class="modal-close" onclick="closeModal('modal-rest-settings')">✕</button>
-  <div class="modal-title">⏱ Rest Timer</div>
+  <div class="modal-title">Rest Timer</div>
   <div class="section-label">Duration</div>
   <div class="rest-options" id="rest-opts"></div>
   <div class="field" id="rest-custom-wrap" style="display:none;">
@@ -363,7 +380,7 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
 </div></div>
 <div class="modal-overlay" id="modal-share-workout"><div class="modal">
   <button class="modal-close" onclick="closeModal('modal-share-workout')">✕</button>
-  <div class="modal-title">📤 Share Workout</div>
+  <div class="modal-title">Share Workout</div>
   <p style="color:var(--text2);font-size:13px;margin-bottom:12px;">Send this workout to a friend — they tap the link to import it instantly.</p>
   <div id="share-status" style="color:var(--text2);font-size:13px;margin-bottom:8px;">Tap below to generate a link.</div>
   <div id="share-result"></div>
@@ -375,6 +392,18 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
   <div class="field"><label>Protein (g)</label><input type="number" inputmode="numeric" id="target-protein" placeholder="e.g. 180"></div>
   <div class="field"><label>Calories (kcal)</label><input type="number" inputmode="numeric" id="target-calories" placeholder="e.g. 2500"></div>
   <button class="btn btn-primary" onclick="saveTargets()">Save</button>
+</div></div>
+<div class="modal-overlay" id="modal-smart-session"><div class="modal">
+  <button class="modal-close" onclick="closeModal('modal-smart-session')">✕</button>
+  <div class="modal-title">Build Me a Workout</div>
+  <div class="section-label">Focus</div>
+  <div class="picker-row">
+    <button class="picker-pill active" id="sp-upper" onclick="setSmartFocus('upper')">Upper</button>
+    <button class="picker-pill" id="sp-lower" onclick="setSmartFocus('lower')">Lower</button>
+    <button class="picker-pill" id="sp-full" onclick="setSmartFocus('full')">Full Body</button>
+  </div>
+  <div id="smart-preview" style="margin-bottom:14px;"></div>
+  <button class="btn btn-primary" onclick="startSmartSession()">Start Session</button>
 </div></div>
 <script>
 const MUSCLES=['Quads','Hamstrings','Glutes','Calves','Chest','Front Delt','Side Delt','Rear Delt','Lats','Traps','Rhomboids','Biceps','Triceps','Abs','Lower Back','Forearms','Full Body'];
@@ -441,6 +470,7 @@ function renderHome(){
   mCats.forEach(c=>{const s=catSets[c]||0;const cls=s===0?'needed':s<6?'low':'ok';h+=`<div class="balance-item"><div class="balance-dot ${cls}"></div><div class="balance-item-label">${c}</div><div class="balance-item-count">${s}s</div></div>`;});
   h+=`</div></div>`;
   const sg=suggestWorkout();if(sg)h+=`<div class="suggest-card"><div class="suggest-label">Suggested Next</div><div class="suggest-name">${sg.name}</div><div class="suggest-reason">${sg.reason}</div></div>`;
+  h+=`<button class="smart-session-btn" onclick="openSmartSession()">Build Me a Workout</button>`;
   h+=`<div class="section-label">Your Workouts</div>`;
   DB.workouts.forEach(wo=>{const last=DB.sessions.filter(s=>s.workoutId===wo.id).sort((a,b)=>b.date-a.date)[0];h+=`<div class="workout-card" onclick="startSession('${wo.id}')"><div><div class="workout-card-name">${wo.name}</div><div class="workout-card-meta">${wo.exerciseIds.length} exercises · ${last?'Last: '+fmtDate(last.date):'Never done'}</div></div><div style="color:var(--text3);font-size:22px;">›</div></div>`;});
   el.innerHTML=h;
@@ -459,6 +489,7 @@ function startSession(wid){
   session={id:uid(),workoutId:wo.id,workoutName:wo.name,date:Date.now(),exercises:wo.exerciseIds.map(exId=>{const ex=DB.exercises.find(e=>e.id===exId);return{exId,exName:ex?ex.name:'Unknown',sets:[]};})};
   document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
   document.getElementById('page-session').classList.add('active');renderSession();
+  if(_isWhimsy()){_whimsyConfetti();setTimeout(()=>{const sn=document.querySelector('.session-name');if(sn)sn.classList.add('session-name-whimsy');},100);}
 }
 function renderSession(){
   if(!session){showPage('home');return;}
@@ -480,7 +511,26 @@ function removeLastSet(ei){if(session.exercises[ei].sets.length>0){session.exerc
 function delSet(ei,si){session.exercises[ei].sets.splice(si,1);renderSession();}
 function updSet(ei,si,f,v){session.exercises[ei].sets[si][f]=v===''?'':(isNaN(parseFloat(v))?v:parseFloat(v));}
 function removeEx(ei){session.exercises.splice(ei,1);renderSession();}
-function finishSession(){if(!session)return;session.exercises.forEach(ex=>{ex.sets=ex.sets.filter(s=>s.weight!==''||s.reps!=='');});DB.sessions.push(session);DB.save();session=null;stopRest();showPage('home');}
+function finishSession(){
+  if(!session)return;
+  session.exercises.forEach(ex=>{ex.sets=ex.sets.filter(s=>s.weight!==''||s.reps!=='');});
+  // Find PRs before saving
+  const newPRs=[];
+  session.exercises.forEach(ex=>{
+    const maxW=Math.max(...ex.sets.map(s=>parseFloat(s.weight)||0));
+    if(!maxW)return;
+    const prior=DB.sessions.filter(s=>s.exercises.some(e=>e.exId===ex.exId));
+    if(!prior.length){newPRs.push({name:ex.exName,weight:maxW});return;}
+    const prevMax=prior.reduce((mx,s)=>{const e=s.exercises.find(e=>e.exId===ex.exId);if(!e)return mx;return Math.max(mx,...e.sets.map(set=>parseFloat(set.weight)||0));},0);
+    if(maxW>prevMax)newPRs.push({name:ex.exName,weight:maxW});
+  });
+  DB.sessions.push(session);DB.save();session=null;stopRest();
+  // Fire PR notifications
+  if(newPRs.length&&'Notification' in window&&Notification.permission==='granted'){
+    newPRs.forEach((pr,i)=>{setTimeout(()=>{try{new Notification('🏆 New PR!',{body:pr.weight+' lbs on '+pr.name});}catch(e){}},i*800);});
+  }
+  showPage('home');
+}
 function lastPerf(exId){const sess=DB.sessions.filter(s=>s.exercises.some(e=>e.exId===exId)).sort((a,b)=>b.date-a.date);if(!sess.length)return null;const ex=sess[0].exercises.find(e=>e.exId===exId);if(!ex||!ex.sets.length)return null;return `${ex.sets.length} sets · ${Math.max(...ex.sets.map(s=>parseFloat(s.weight)||0))} lbs`;}
 function getLastSets(exId){const sess=DB.sessions.filter(s=>s.exercises.some(e=>e.exId===exId)).sort((a,b)=>b.date-a.date);if(!sess.length)return null;const ex=sess[0].exercises.find(e=>e.exId===exId);if(!ex||!ex.sets.length)return null;return{date:sess[0].date,sets:ex.sets};}
 function exMatch(ex,q){if(!q)return true;const ql=q.toLowerCase();return ex.name.toLowerCase().includes(ql)||(ex.muscles_primary||[]).some(m=>m.toLowerCase().includes(ql))||(ex.muscles_secondary||[]).some(m=>m.toLowerCase().includes(ql))||ex.category.toLowerCase().includes(ql);}
@@ -571,16 +621,25 @@ function renderBreakdownBars(){
   if(!sorted.length){el.innerHTML=`<div style="color:var(--text3);font-size:13px;text-align:center;padding:10px 0;">No data</div>`;return;}
   const max=sorted[0][1];el.innerHTML=sorted.map(([l,c])=>`<div class="bar-row"><div class="bar-label">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/max*100).toFixed(1)}%"></div></div><div class="bar-val">${c}</div></div>`).join('');
 }
+let _heatmapOpen=false;
 function renderHeatmap(){
   const el=document.getElementById('heatmap-wrap');if(!el)return;
   const trained=new Set(DB.sessions.map(s=>{const d=new Date(s.date);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}));
   const today=new Date();const todayStr=todayKey();const days=[];for(let i=69;i>=0;i--){const d=new Date(today);d.setDate(today.getDate()-i);const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;days.push({key:k,d});}
   const tc=days.filter(d=>trained.has(d.key)).length;
-  let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);">Last 10 Weeks</div><div style="font-size:12px;color:var(--text2);">${tc} sessions</div></div>`;
+  let h=`<div class="heatmap-header" onclick="toggleHeatmap()"><div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);">Last 10 Weeks · <span style="color:var(--accent);">${tc} sessions</span></div><button class="heatmap-toggle-btn">${_heatmapOpen?'▲ Hide':'▼ Show'}</button></div>`;
+  h+=`<div class="heatmap-body ${_heatmapOpen?'open':''}" id="heatmap-body">`;
   h+=`<div class="heatmap-labels">${['S','M','T','W','T','F','S'].map(d=>`<div class="heatmap-label">${d}</div>`).join('')}</div><div class="heatmap-grid">`;
   for(let i=0;i<days[0].d.getDay();i++)h+=`<div></div>`;
   days.forEach(({key})=>{h+=`<div class="heatmap-day${trained.has(key)?' trained':''}${key===todayStr?' today':''}"></div>`;});
-  h+=`</div>`;el.innerHTML=h;
+  h+=`</div></div>`;el.innerHTML=h;
+}
+function toggleHeatmap(){
+  _heatmapOpen=!_heatmapOpen;
+  const body=document.getElementById('heatmap-body');
+  const btn=document.querySelector('.heatmap-toggle-btn');
+  if(body)body.classList.toggle('open',_heatmapOpen);
+  if(btn)btn.textContent=_heatmapOpen?'▲ Hide':'▼ Show';
 }
 function renderPRBoard(){
   const el=document.getElementById('pr-board');if(!el)return;
@@ -665,7 +724,7 @@ function openSetTargets(){document.getElementById('target-protein').value=HL.tar
 function promptAddCustomMacro(){const name=prompt('Custom tracker name:');if(!name)return;const unit=prompt('Unit (e.g. ml, steps, g):');if(unit===null)return;HL.customMacros.push({key:'c_'+uid(),label:name,unit:unit||'',emoji:'📊'});HL.save();renderHealth();}
 function renderManage(){
   const el=document.getElementById('manage-content');
-  let h=`<button class="btn btn-secondary" onclick="openExport()" style="width:100%;margin-bottom:8px;">📤 Export Workout Log</button><div style="display:flex;gap:8px;margin-bottom:8px;"><button class="btn btn-secondary" onclick="openBackup()" style="flex:1;">💾 Backup</button><button class="btn btn-secondary" onclick="openModal('modal-restore')" style="flex:1;">📥 Restore</button></div><button class="btn btn-secondary" onclick="downloadBackup()" style="width:100%;margin-bottom:14px;">⬇️ Download Backup File</button>`;
+  let h=`<button class="btn btn-secondary" onclick="openExport()" style="width:100%;margin-bottom:8px;">Export Workout Log</button><div style="display:flex;gap:8px;margin-bottom:8px;"><button class="btn btn-secondary" onclick="openBackup()" style="flex:1;">Backup</button><button class="btn btn-secondary" onclick="openModal('modal-restore')" style="flex:1;">Restore</button></div><button class="btn btn-secondary" onclick="downloadBackup()" style="width:100%;margin-bottom:14px;">Download Backup File</button>`;
   h+=`<div class="section-label">Rest Timer</div><div class="rest-timer-card" onclick="openRestSettings()"><div class="rest-timer-left"><div style="font-size:26px;">⏱</div><div><div class="rest-timer-label">Rest Between Sets</div><div class="rest-timer-sub">Tap to change duration</div></div></div><div class="rest-timer-val" id="rest-timer-card-val">${fmtRest(restDur)}</div></div>`;
   h+=`<div class="section-label">Workouts</div>`;
   if(!DB.workouts.length)h+=`<div style="color:var(--text3);font-size:13px;padding:8px 0 12px;">No workouts yet.</div>`;
@@ -705,10 +764,38 @@ function delEx(id){DB.exercises=DB.exercises.filter(e=>e.id!==id);DB.save();rend
 function deleteCat(cat){DB.categories=DB.categories.filter(c=>c!==cat);DB.save();renderManage();}
 function saveNewCat(){const name=document.getElementById('new-cat-name').value.trim();if(!name)return;if(DB.categories.includes(name)){alert('Already exists');return;}DB.categories.push(name);DB.save();document.getElementById('new-cat-name').value='';closeModal('modal-add-cat');renderManage();}
 function openAddWorkout(){selectedExIds=[];document.getElementById('new-wo-name').value='';document.getElementById('wo-search').value='';collapsedPickerCats={};renderWoPicker();openModal('modal-add-workout');}
+function _buildPickerHTML(exercises, q, selectedIds, toggleFn, pickerCatKey){
+  if(!q){
+    const cats=[...new Set(exercises.map(e=>e.category))];let h='';
+    cats.forEach(cat=>{const exs=exercises.filter(e=>e.category===cat);if(!exs.length)return;const key=pickerCatKey+cat;const open=!!collapsedPickerCats[key];const kid=key.replace(/\W/g,'_');h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{const s=selectedIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="${toggleFn}('${ex.id}')" style="${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});h+=`</div>`;});
+    return h;
+  }
+  const ql=q.toLowerCase();
+  const primary=exercises.filter(e=>{
+    if(e.name.toLowerCase().includes(ql))return true;
+    if((e.muscles_primary||[]).some(m=>m.toLowerCase().includes(ql)))return true;
+    if(e.category.toLowerCase().includes(ql))return true;
+    return false;
+  });
+  const secondary=exercises.filter(e=>{
+    if(primary.includes(e))return false;
+    return(e.muscles_secondary||[]).some(m=>m.toLowerCase().includes(ql));
+  });
+  let h='';
+  if(!primary.length&&!secondary.length)return '<p style="color:var(--text2);padding:10px 0;">No exercises found.</p>';
+  if(primary.length){
+    h+=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Primary Movers</div>`;
+    primary.forEach(ex=>{const s=selectedIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="${toggleFn}('${ex.id}')" style="${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});
+  }
+  if(secondary.length){
+    h+=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin:12px 0 6px;border-top:1px solid var(--border);padding-top:10px;">Also Works ${q}</div>`;
+    secondary.forEach(ex=>{const s=selectedIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="${toggleFn}('${ex.id}')" style="opacity:.75;${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});
+  }
+  return h;
+}
 function renderWoPicker(){
-  const q=document.getElementById('wo-search')?.value||'';const cats=[...new Set(DB.exercises.map(e=>e.category))];let h='';
-  cats.forEach(cat=>{const exs=DB.exercises.filter(e=>e.category===cat&&exMatch(e,q));if(!exs.length)return;const key='n_'+cat;const open=!!collapsedPickerCats[key]||!!q;const kid=key.replace(/\W/g,'_');h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{const s=selectedExIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="toggleExPick('${ex.id}')" style="${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});h+=`</div>`;});
-  document.getElementById('wo-picker').innerHTML=h;
+  const q=document.getElementById('wo-search')?.value||'';
+  document.getElementById('wo-picker').innerHTML=_buildPickerHTML(DB.exercises,q,selectedExIds,'toggleExPick','n_');
   let oh='';if(selectedExIds.length){oh=`<div class="section-label">Order (${selectedExIds.length})</div>`;selectedExIds.forEach((id,i)=>{const ex=DB.exercises.find(e=>e.id===id);oh+=`<div class="exercise-order-item" style="cursor:default;"><div class="exercise-order-num">${i+1}</div><div class="exercise-order-name">${ex?.name||'?'}</div><div class="order-arrows">${i>0?`<button class="order-arrow" onclick="moveEx('n',${i},-1)">▲</button>`:'<div style="height:22px;"></div>'}${i<selectedExIds.length-1?`<button class="order-arrow" onclick="moveEx('n',${i},1)">▼</button>`:'<div style="height:22px;"></div>'}</div></div>`;});}
   document.getElementById('wo-order').innerHTML=oh;
 }
@@ -717,9 +804,8 @@ function moveEx(mode,idx,dir){const ni=idx+dir;if(ni<0||ni>=selectedExIds.length
 function saveNewWorkout(){const name=document.getElementById('new-wo-name').value.trim();if(!name){alert('Enter a workout name');return;}if(!selectedExIds.length){alert('Select at least one exercise');return;}DB.workouts.push({id:uid(),name,exerciseIds:[...selectedExIds]});DB.save();closeModal('modal-add-workout');renderManage();renderHome();}
 function openEditWorkout(id){const wo=DB.workouts.find(w=>w.id===id);if(!wo)return;editingWorkoutId=id;selectedExIds=[...wo.exerciseIds];document.getElementById('edit-wo-name').value=wo.name;document.getElementById('edit-wo-search').value='';collapsedPickerCats={};renderEditWoPicker();openModal('modal-edit-workout');}
 function renderEditWoPicker(){
-  const q=document.getElementById('edit-wo-search')?.value||'';const cats=DB.categories.filter(c=>DB.exercises.some(e=>e.category===c&&exMatch(e,q)));let h='';
-  cats.forEach(cat=>{const exs=DB.exercises.filter(e=>e.category===cat&&exMatch(e,q));if(!exs.length)return;const key='e_'+cat;const open=!!collapsedPickerCats[key]||!!q;const kid=key.replace(/\W/g,'_');h+=`<div class="cat-header" onclick="togglePCat('${key}','${kid}')"><div><div class="cat-header-name">${cat}</div><div class="cat-header-count">${exs.length}</div></div><span class="cat-arrow ${open?'open':''}" id="ca-${kid}">›</span></div><div class="cat-body ${open?'open':''}" id="cb-${kid}">`;exs.forEach(ex=>{const s=selectedExIds.includes(ex.id);h+=`<div class="exercise-order-item" onclick="toggleEditExPick('${ex.id}')" style="${s?'border-color:var(--accent);':''}"><div class="exercise-order-name" style="${s?'color:var(--accent);':''}">${ex.name}</div><div style="color:${s?'var(--accent)':'var(--text3)'};font-size:20px;">${s?'✓':'+'}</div></div>`;});h+=`</div>`;});
-  document.getElementById('edit-wo-picker').innerHTML=h;
+  const q=document.getElementById('edit-wo-search')?.value||'';
+  document.getElementById('edit-wo-picker').innerHTML=_buildPickerHTML(DB.exercises,q,selectedExIds,'toggleEditExPick','e_');
   let oh='';if(selectedExIds.length){oh=`<div class="section-label">Order (${selectedExIds.length})</div>`;selectedExIds.forEach((id,i)=>{const ex=DB.exercises.find(e=>e.id===id);oh+=`<div class="exercise-order-item" style="cursor:default;"><div class="exercise-order-num">${i+1}</div><div class="exercise-order-name">${ex?.name||'?'}</div><div class="order-arrows">${i>0?`<button class="order-arrow" onclick="moveEx('e',${i},-1)">▲</button>`:'<div style="height:22px;"></div>'}${i<selectedExIds.length-1?`<button class="order-arrow" onclick="moveEx('e',${i},1)">▼</button>`:'<div style="height:22px;"></div>'}</div></div>`;});}
   document.getElementById('edit-wo-order').innerHTML=oh;
 }
@@ -780,70 +866,161 @@ window.addEventListener('load',()=>{
   if(w){try{const wo=JSON.parse(atob(decodeURIComponent(w)));if(wo.name&&wo.exerciseIds){setTimeout(()=>{const names=wo.exerciseIds.map(id=>{const ex=DB.exercises.find(e=>e.id===id)||(wo._exercises||[]).find(e=>e.id===id);return ex?ex.name:null;}).filter(Boolean).join(', ');if(confirm('Import workout "'+wo.name+'"?\n\n'+names+'\n\nTap OK to add.')){if(wo._exercises)wo._exercises.forEach(ex=>{if(!DB.exercises.find(e=>e.id===ex.id))DB.exercises.push(ex);});DB.workouts.push({id:uid(),name:wo.name,exerciseIds:wo.exerciseIds});DB.save();renderHome();alert('Added "'+wo.name+'"!');}},500);}}catch(e){}}
   window.history.replaceState({},'',window.location.pathname);
 });
+// ── SMART SUGGESTED SESSION ──────────────────────────
+const OLYMPIC_CATS=['Olympic'];
+const UPPER_CATS=['Chest','Back','Shoulders','Arms'];
+const LOWER_CATS=['Legs'];
+const PUSH_CATS=['Chest','Shoulders'];
+const PULL_CATS=['Back'];
+let _smartFocus='upper';
+
+function openSmartSession(){
+_smartFocus=‘upper’;
+document.querySelectorAll(’.picker-pill’).forEach(p=>p.classList.remove(‘active’));
+document.getElementById(‘sp-upper’)?.classList.add(‘active’);
+_renderSmartPreview();
+openModal(‘modal-smart-session’);
+}
+function setSmartFocus(f){
+_smartFocus=f;
+document.querySelectorAll(’.picker-pill’).forEach(p=>p.classList.remove(‘active’));
+document.getElementById(‘sp-’+f)?.classList.add(‘active’);
+_renderSmartPreview();
+}
+function _getMuscleDeficits(){
+const weekAgo=Date.now()-(7*24*60*60*1000);
+const recent=DB.sessions.filter(s=>s.date>=weekAgo);
+const counts={};
+recent.forEach(s=>{s.exercises.forEach(ex=>{const dbEx=DB.exercises.find(e=>e.id===ex.exId);if(!dbEx)return;(dbEx.muscles_primary||[]).forEach(m=>{counts[m]=(counts[m]||0)+ex.sets.length;});});});
+return counts;
+}
+function _buildSmartExercises(focus){
+const pool=DB.exercises.filter(e=>!OLYMPIC_CATS.includes(e.category));
+let cats;
+if(focus===‘upper’)cats=UPPER_CATS;
+else if(focus===‘lower’)cats=LOWER_CATS;
+else cats=[…UPPER_CATS,…LOWER_CATS,‘Core’];
+const eligible=pool.filter(e=>cats.includes(e.category));
+const deficits=_getMuscleDeficits();
+// Score each exercise by how deficit its primary muscles are
+const scored=eligible.map(ex=>{
+const score=(ex.muscles_primary||[]).reduce((s,m)=>s+(10-(deficits[m]||0)),0);
+return{ex,score};
+}).sort((a,b)=>b.score-a.score);
+// Pick balanced selection
+const picked=[];const usedCats={};const target=4;
+// First pass: one from each major category
+const majorGroups=focus===‘lower’?[[‘Legs’]]:focus===‘upper’?[PUSH_CATS,PULL_CATS,[‘Arms’]]:[[…PUSH_CATS],[…PULL_CATS],[‘Legs’],[‘Core’]];
+majorGroups.forEach(group=>{
+const candidate=scored.find(({ex})=>group.includes(ex.category)&&!picked.includes(ex));
+if(candidate){picked.push(candidate.ex);usedCats[candidate.ex.category]=(usedCats[candidate.ex.category]||0)+1;}
+});
+// Fill remaining slots with highest scored
+scored.forEach(({ex})=>{
+if(picked.length>=target)return;
+if(!picked.includes(ex))picked.push(ex);
+});
+return picked.slice(0,target);
+}
+function _renderSmartPreview(){
+const exs=_buildSmartExercises(_smartFocus);
+let h=’’;
+if(!exs.length){h=’<p style="color:var(--text2);font-size:13px;">Not enough exercises in your library.</p>’;}
+else{exs.forEach((ex,i)=>{h+=`<div class="exercise-order-item" style="cursor:default;margin-bottom:6px;"><div class="exercise-order-num">${i+1}</div><div style="flex:1;"><div class="exercise-order-name">${ex.name}</div><div style="font-size:11px;color:var(--text2);">${(ex.muscles_primary||[]).join(', ')}</div></div></div>`;});}
+document.getElementById(‘smart-preview’).innerHTML=h;
+}
+function startSmartSession(){
+const exs=_buildSmartExercises(_smartFocus);
+if(!exs.length){alert(‘Not enough exercises — add some in Manage first.’);return;}
+closeModal(‘modal-smart-session’);
+session={id:uid(),workoutId:null,workoutName:_smartFocus===‘upper’?‘Upper Body’:_smartFocus===‘lower’?‘Lower Body’:‘Full Body’,date:Date.now(),exercises:exs.map(ex=>({exId:ex.id,exName:ex.name,sets:[]}))};
+document.querySelectorAll(’.page’).forEach(el=>el.classList.remove(‘active’));
+document.querySelectorAll(’.nav-btn’).forEach(el=>el.classList.remove(‘active’));
+document.getElementById(‘page-session’).classList.add(‘active’);
+renderSession();
+}
+
 // ── WHIMSY EASTER EGGS ───────────────────────────────
-const TOASTS=["you're literally so strong 💅","bestie is LIFTING 🏋️","slay the weights babe","main character energy ✨","that set was iconic","the gym fears you","ur doing amazing sweetie 🌸","obsessed with ur dedication","not her skipping leg day 💪","iconic. legendary. that's you.","the bar KNOWS who's boss","girlboss but make it gainz"]
-const EMOJIS=['✨','🌸','💖','⭐','🦋','💫','🌟','💕','🎀','🔮','🌈','💜'];
-const AFFIRMATIONS=["slay","iconic","periodt","we love to see it","yes queen","that's the one","stunning","immaculate","chef's kiss","ur a legend"]
+const TOASTS=[“you’re literally so strong 💅”,“bestie is LIFTING 🏋️”,“slay the weights babe”,“main character energy ✨”,“that set was iconic”,“the gym fears you”,“ur doing amazing sweetie 🌸”,“obsessed with ur dedication”,“not her skipping leg day 💪”,“iconic. legendary. that’s you.”,“the bar KNOWS who’s boss”,“girlboss but make it gainz”]
+const EMOJIS=[‘✨’,‘🌸’,‘💖’,‘⭐’,‘🦋’,‘💫’,‘🌟’,‘💕’,‘🎀’,‘🔮’,‘🌈’,‘💜’];
+const AFFIRMATIONS=[“slay”,“iconic”,“periodt”,“we love to see it”,“yes queen”,“that’s the one”,“stunning”,“immaculate”,“chef’s kiss”,“ur a legend”]
 let _whimsyToastTimer=null;
-function _isWhimsy(){return currentTheme()==='whimsy';}
+function _isWhimsy(){return currentTheme()===‘whimsy’;}
 function _whimsyToast(){
-  if(!_isWhimsy())return;
-  const msg=TOASTS[Math.floor(Math.random()*TOASTS.length)];
-  const el=document.createElement('div');el.className='whimsy-toast';el.textContent=msg;
-  document.body.appendChild(el);setTimeout(()=>el.remove(),3600);
+if(!_isWhimsy())return;
+const msg=TOASTS[Math.floor(Math.random()*TOASTS.length)];
+const el=document.createElement(‘div’);el.className=‘whimsy-toast’;el.textContent=msg;
+document.body.appendChild(el);setTimeout(()=>el.remove(),3600);
 }
 function _whimsyEmojiRain(){
-  if(!_isWhimsy())return;
-  const count=4+Math.floor(Math.random()*5);
-  for(let i=0;i<count;i++){
-    setTimeout(()=>{
-      const el=document.createElement('div');el.className='whimsy-emoji';
-      el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-      el.style.left=(10+Math.random()*80)+'vw';
-      el.style.bottom='80px';
-      el.style.setProperty('--dur',(2.5+Math.random()*2)+'s');
-      document.body.appendChild(el);setTimeout(()=>el.remove(),5000);
-    },i*200);
-  }
+if(!_isWhimsy())return;
+const count=4+Math.floor(Math.random()*5);
+for(let i=0;i<count;i++){
+setTimeout(()=>{
+const el=document.createElement(‘div’);el.className=‘whimsy-emoji’;
+el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+el.style.left=(10+Math.random()*80)+‘vw’;
+el.style.bottom=‘80px’;
+el.style.setProperty(’–dur’,(2.5+Math.random()*2)+‘s’);
+document.body.appendChild(el);setTimeout(()=>el.remove(),5000);
+},i*200);
+}
 }
 function _whimsySparkBurst(x,y){
-  if(!_isWhimsy())return;
-  const count=6;
-  for(let i=0;i<count;i++){
-    const el=document.createElement('div');el.className='whimsy-spark';
-    el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-    el.style.left=x+'px';el.style.top=y+'px';
-    const angle=(i/count)*Math.PI*2;const dist=40+Math.random()*40;
-    el.style.setProperty('--tx',Math.cos(angle)*dist+'px');
-    el.style.setProperty('--ty',Math.sin(angle)*dist-30+'px');
-    el.style.setProperty('--dur',(.5+Math.random()*.5)+'s');
-    document.body.appendChild(el);setTimeout(()=>el.remove(),1200);
-  }
+if(!_isWhimsy())return;
+const count=6;
+for(let i=0;i<count;i++){
+const el=document.createElement(‘div’);el.className=‘whimsy-spark’;
+el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+el.style.left=x+‘px’;el.style.top=y+‘px’;
+const angle=(i/count)*Math.PI*2;const dist=40+Math.random()*40;
+el.style.setProperty(’–tx’,Math.cos(angle)*dist+‘px’);
+el.style.setProperty(’–ty’,Math.sin(angle)*dist-30+‘px’);
+el.style.setProperty(’–dur’,(.5+Math.random()*.5)+‘s’);
+document.body.appendChild(el);setTimeout(()=>el.remove(),1200);
+}
 }
 function _whimsyAffirmation(){
-  if(!_isWhimsy())return Math.random()>0.5?'':'';
-  if(Math.random()<0.35)return AFFIRMATIONS[Math.floor(Math.random()*AFFIRMATIONS.length)];
-  return '';
+if(!_isWhimsy())return Math.random()>0.5?’’:’’;
+if(Math.random()<0.35)return AFFIRMATIONS[Math.floor(Math.random()*AFFIRMATIONS.length)];
+return ‘’;
+}
+function _whimsyConfetti(){
+if(!_isWhimsy())return;
+const colors=[’#d400a8’,’#ff69cc’,’#f5a800’,’#a020f0’,’#ff4081’,’#00c44f’,’#fff’];
+const count=40;
+for(let i=0;i<count;i++){
+setTimeout(()=>{
+const el=document.createElement(‘div’);el.className=‘whimsy-confetti’;
+el.style.left=(Math.random()*100)+‘vw’;
+el.style.background=colors[Math.floor(Math.random()*colors.length)];
+el.style.setProperty(’–dur’,(2+Math.random()*2)+‘s’);
+el.style.width=(6+Math.random()*8)+‘px’;
+el.style.height=(6+Math.random()*8)+‘px’;
+document.body.appendChild(el);setTimeout(()=>el.remove(),4200);
+},i*60);
+}
 }
 function _scheduleWhimsyEvents(){
-  if(!_isWhimsy())return;
-  // Toast every 45-120 seconds randomly
-  const toastDelay=(45+Math.random()*75)*1000;
-  _whimsyToastTimer=setTimeout(()=>{_whimsyToast();_scheduleWhimsyEvents();},toastDelay);
-  // Emoji rain every 60-180 seconds
-  const rainDelay=(60+Math.random()*120)*1000;
-  setTimeout(()=>{if(_isWhimsy())_whimsyEmojiRain();},rainDelay);
+if(!_isWhimsy())return;
+// Toast every 45-120 seconds randomly
+const toastDelay=(45+Math.random()*75)*1000;
+_whimsyToastTimer=setTimeout(()=>{_whimsyToast();_scheduleWhimsyEvents();},toastDelay);
+// Emoji rain every 60-180 seconds
+const rainDelay=(60+Math.random()*120)*1000;
+setTimeout(()=>{if(_isWhimsy())_whimsyEmojiRain();},rainDelay);
 }
 // Tap spark burst
-document.addEventListener('click',e=>{
-  if(!_isWhimsy())return;
-  if(Math.random()<0.25)_whimsySparkBurst(e.clientX,e.clientY);
+document.addEventListener(‘click’,e=>{
+if(!_isWhimsy())return;
+if(Math.random()<0.25)_whimsySparkBurst(e.clientX,e.clientY);
 });
 // Kick off on load if whimsy
 setTimeout(()=>{if(_isWhimsy()){_scheduleWhimsyEvents();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
 DB.load();seedData();HL.load();
 // Write theme toggle immediately so page never looks blank
-try{renderHome();}catch(e){console.error(e);document.getElementById('home-content').innerHTML='<div class="theme-toggle"><button class="theme-btn" onclick="setTheme("dark")">🌙 Dark</button><button class="theme-btn" onclick="setTheme("light")">☀️ Light</button><button class="theme-btn" onclick="setTheme("whimsy")">✨ Whimsy</button></div><div class="empty-state">Something went wrong loading your data.<br>Go to <b>Manage</b> to check your workouts.</div>';}
+try{renderHome();}catch(e){console.error(e);document.getElementById(‘home-content’).innerHTML=’<div class="theme-toggle"><button class=“theme-btn” onclick=“setTheme(“dark”)”>🌙 Dark</button><button class=“theme-btn” onclick=“setTheme(“light”)”>☀️ Light</button><button class=“theme-btn” onclick=“setTheme(“whimsy”)”>✨ Whimsy</button></div><div class="empty-state">Something went wrong loading your data.<br>Go to <b>Manage</b> to check your workouts.</div>’;}
 </script>
+
 </body>
 </html>
