@@ -495,19 +495,14 @@ function renderHome(){
   var el=document.getElementById('home-content');
   if(!el)return;
   var t=currentTheme();
-  el.innerHTML='';
-  var tog=document.createElement('div');
-  tog.className='theme-toggle';
-  var themes=[{k:'dark',l:'🌙 Dark'},{k:'light',l:'☀️ Light'},{k:'whimsy',l:'✨ Whimsy'}];
-  themes.forEach(function(th){
-    var btn=document.createElement('button');
-    btn.className='theme-btn'+(t===th.k?' active':'');
-    btn.textContent=th.l;
-    btn.setAttribute('data-theme-key',th.k);
-    btn.onclick=function(){setTheme(this.getAttribute('data-theme-key'));};
-    tog.appendChild(btn);
-  });
-  el.appendChild(tog);
+  var dA=t==='dark'?'active':'';
+  var lA=t==='light'?'active':'';
+  var wA=t==='whimsy'?'active':'';
+  el.innerHTML='<div class="theme-toggle">'
+    +'<button class="theme-btn '+dA+'" onclick="setTheme(&quot;dark&quot;)">🌙 Dark</button>'
+    +'<button class="theme-btn '+lA+'" onclick="setTheme(&quot;light&quot;)">☀️ Light</button>'
+    +'<button class="theme-btn '+wA+'" onclick="setTheme(&quot;whimsy&quot;)">✨ Whimsy</button>'
+    +'</div>';
   if(!DB.workouts.length){
     var es=document.createElement('div');
     es.className='empty-state';
