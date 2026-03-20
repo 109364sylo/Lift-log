@@ -178,6 +178,9 @@ canvas{width:100%!important;}
 .picker-row{display:flex;gap:8px;margin-bottom:12px;}
 .picker-pill{flex:1;border:2px solid var(--border2);border-radius:30px;padding:10px 8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;text-align:center;cursor:pointer;background:none;color:var(--text2);}
 .picker-pill.active{border-color:var(--accent);color:var(--accent);background:var(--bg3);}
+.theme-toggle{display:flex;gap:8px;margin-bottom:4px;}
+.theme-btn{flex:1;border:2px solid var(--border2);border-radius:30px;padding:10px 8px;background:var(--bg3);color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;}
+.theme-btn.active{border-color:var(--accent);color:var(--accent);background:var(--bg2);}
 .analytics-toggle{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:3px;}
 .analytics-btn{flex:1;border:none;border-radius:7px;padding:6px 4px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;background:none;color:var(--text3);}
 .analytics-btn.active{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.15);}
@@ -1015,6 +1018,13 @@ function openSchedPick(dow){_schedPickDay=dow;document.getElementById('sched-pic
 function toggleSchedWo(wid,dow){var sched=loadSchedule();if(!sched[dow])sched[dow]=[];var idx=sched[dow].indexOf(wid);if(idx>-1)sched[dow].splice(idx,1);else sched[dow].push(wid);saveSchedule(sched);openSchedPick(dow);renderHome();}
 function clearSchedDay(){if(_schedPickDay===null)return;var sched=loadSchedule();sched[_schedPickDay]=[];saveSchedule(sched);closeModal('m-sched-pick');renderHome();}
 function openSettings(){renderSettingsBody();openModal('m-settings');}
+function checkForUpdates(){
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(regs){regs.forEach(function(r){r.unregister();});});
+    caches.keys().then(function(keys){keys.forEach(function(k){caches.delete(k);});});
+  }
+  setTimeout(function(){window.location.reload(true);},300);
+}
 function renderSettingsBody(){
   var p=loadPrefs();var t=currentTheme();var el=document.getElementById('settings-body');el.innerHTML='';
   var s1=document.createElement('div');s1.className='settings-section';
@@ -1042,10 +1052,26 @@ function renderSettingsBody(){
   dataButtons.forEach(function(b){var btn=document.createElement('button');btn.className='btn btn-secondary';btn.style.cssText='width:100%;margin-bottom:8px;';btn.textContent=b.label;btn.setAttribute('onclick',b.fn);s5.appendChild(btn);});el.appendChild(s5);
   var s6=document.createElement('div');s6.className='settings-section';
   var st6=document.createElement('div');st6.className='settings-section-title';st6.textContent='About';s6.appendChild(st6);
-  var vRow=document.createElement('div');vRow.className='settings-row';vRow.innerHTML='<div class="settings-row-label">Version</div><div style="font-size:13px;color:var(--text2);">v0.2</div>';s6.appendChild(vRow);
+  var vRow=document.createElement('div');vRow.className='settings-row';vRow.innerHTML='<div class="settings-row-label">Version</div><div style="font-size:13px;color:var(--text2);">v0.3</div>';s6.appendChild(vRow);
   var uRow=document.createElement('div');uRow.className='settings-row';var uInfo=document.createElement('div');uInfo.innerHTML='<div class="settings-row-label">Check for Updates</div><div class="settings-row-sub">Force app to reload latest version</div>';var uBtn=document.createElement('button');uBtn.className='btn btn-ghost';uBtn.style.cssText='font-size:12px;padding:6px 12px;';uBtn.textContent='Update';uBtn.onclick=function(){if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(regs){regs.forEach(function(r){r.unregister();});});caches.keys().then(function(keys){keys.forEach(function(k){caches.delete(k);});});}setTimeout(function(){window.location.reload(true);},300);};uRow.appendChild(uInfo);uRow.appendChild(uBtn);s6.appendChild(uRow);el.appendChild(s6);
   var tw=document.getElementById('settings-theme-wrap');
-  if(tw){var tog=document.createElement('div');tog.className='theme-toggle';tog.style.marginBottom='0';[{k:'dark',l:'Dark'},{k:'light',l:'Light'},{k:'whimsy',l:'Whimsy'}].forEach(function(th){var btn=document.createElement('button');btn.className='theme-btn'+(currentTheme()===th.k?' active':'');btn.textContent=th.l;btn.setAttribute('data-tk',th.k);btn.onclick=function(){setTheme(this.getAttribute('data-tk'));};tog.appendChild(btn);});tw.appendChild(tog);}
+  if(tw){
+    var tog=document.createElement('div');tog.className='theme-toggle';
+    var themes=[{k:'dark',l:'Dark'},{k:'light',l:'Light'},{k:'whimsy',l:'Whimsy'}];
+    themes.forEach(function(th){
+      var btn=document.createElement('button');
+      btn.className='theme-btn'+(currentTheme()===th.k?' active':'');
+      btn.textContent=th.l;
+      btn.setAttribute('data-tk',th.k);
+      btn.onclick=function(){
+        document.querySelectorAll('.theme-btn').forEach(function(b){b.classList.remove('active');});
+        this.classList.add('active');
+        setTheme(this.getAttribute('data-tk'));
+      };
+      tog.appendChild(btn);
+    });
+    tw.appendChild(tog);
+  }
 }
 var _whimsyToastTimer=null;
 var TOASTS=["you're literally so strong","bestie is LIFTING","slay the weights babe","main character energy","that set was iconic","the gym fears you","ur doing amazing sweetie","obsessed with ur dedication","iconic. legendary. that's you.","the bar KNOWS who's boss","girlboss but make it gainz","that's so slay coded","she's built different fr","the gains are immaculate","not her resting between sets","serving looks AND strength","that form was giving everything","the dumbbells are scared of you","main character has entered the gym","the barbell said yes queen","this is your villain arc and we are HERE for it","the weights respect you and so do we","not a warm-up. a STATEMENT.","ur literally built for this","that rep was academy award worthy","she woke up and chose violence (against her PRs)","the audacity. the strength. the range.","that set just ended someone's career bestie","ur form is giving haute couture","absolutely unhinged gains","the gym didn't know what was coming","that was so effortlessly powerful of you","ur muscles are thriving and so are we","the PR board is shaking rn"];
