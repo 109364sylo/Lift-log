@@ -1733,25 +1733,7 @@ function _whimsyAff(){if(!_isW())return’’;return Math.random()<0.35?AFFS[Mat
 function _scheduleWhimsy(){if(!_isW())return;var td=(25+Math.random()*45)*1000;_whimsyToastTimer=setTimeout(function(){_whimsyToast();_scheduleWhimsy();},td);var rd=(60+Math.random()*120)*1000;setTimeout(function(){if(_isW())_whimsyRain();},rd);}
 document.addEventListener(‘click’,function(e){if(!_isW())return;if(Math.random()<0.25)_whimsy_spark(e.clientX,e.clientY);});
 setTimeout(function(){if(_isW()){_scheduleWhimsy();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
-function checkForUpdates(){
-if(!(‘serviceWorker’ in navigator)){alert(‘Service worker not supported on this device.’);return;}
-navigator.serviceWorker.getRegistration().then(function(reg){
-if(!reg){alert(‘No service worker registered. Try reloading the page.’);return;}
-reg.update().then(function(){
-if(reg.waiting){
-reg.waiting.postMessage({type:‘SKIP_WAITING’});
-setTimeout(function(){window.location.reload();},500);
-} else {
-// Force reload to get latest
-caches.keys().then(function(keys){
-return Promise.all(keys.map(function(k){return caches.delete(k);}));
-}).then(function(){
-window.location.reload(true);
-});
-}
-});
-});
-}
+
 DB.load();seedData();HL.load();renderHome();
 </script>
 
