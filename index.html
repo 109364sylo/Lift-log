@@ -506,6 +506,7 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
   <button class="btn btn-primary" onclick="startSmartSession()">Start Session</button>
 </div></div>
 <script>
+try{
 var MUSCLES=['Quads','Hamstrings','Glutes','Calves','Chest','Front Delt','Side Delt','Rear Delt','Lats','Traps','Rhomboids','Biceps','Triceps','Abs','Lower Back','Forearms','Full Body'];
 var DB={
   exercises:[],workouts:[],sessions:[],categories:[],
@@ -1735,6 +1736,9 @@ document.addEventListener(‘click’,function(e){if(!_isW())return;if(Math.rand
 setTimeout(function(){if(_isW()){_scheduleWhimsy();if(Math.random()<0.4)setTimeout(_whimsyToast,3000);}},1000);
 
 DB.load();seedData();HL.load();renderHome();
+}catch(e){
+document.body.innerHTML+=’<div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:red;color:white;padding:20px;border-radius:10px;font-size:14px;z-index:9999;max-width:300px;word-break:break-all;">CRASH: ‘+e.message+’<br><br>’+e.stack+’</div>’;
+}
 </script>
 
 </body>
