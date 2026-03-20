@@ -637,8 +637,19 @@ function renderHome(){
   DB.workouts.forEach(function(wo){
     var last=DB.sessions.filter(function(s){return s.workoutId===wo.id;}).sort(function(a,b){return b.date-a.date;})[0];
     var meta=(wo.exerciseIds||[]).length+' exercises · '+(last?'Last: '+fmtDate(last.date):'Never done');
-    el.innerHTML+='<div class="workout-card" onclick="startSession(\''+wo.id+'\')" oncontextmenu="event.preventDefault();openEditWo(\''+wo.id+'\')" ontouchstart="_lpStart(event,\''+wo.id+'\')" ontouchend="_lpEnd()" ontouchmove="_lpEnd()"><div><div class="workout-card-name">'+wo.name+'</div><div class="workout-card-meta">'+meta+'</div></div><div style="color:var(--text3);font-size:22px;">›</div></div>';
+    el.innerHTML+='<div class="workout-card" onclick="startSession(\''+wo.id+'\')" data-woid="'+wo.id+'"><div><div class="workout-card-name">'+wo.name+'</div><div class="workout-card-meta">'+meta+'</div></div><div style="color:var(--text3);font-size:22px;">\u203a</div></div>';
   });
+  // Wire long press on workout cards via DOM
+  setTimeout(function(){
+    document.querySelectorAll('.workout-card[data-woid]').forEach(function(card){
+      var wid=card.getAttribute('data-woid');
+      var lpt=null;
+      card.addEventListener('touchstart',function(){lpt=setTimeout(function(){if(navigator.vibrate)navigator.vibrate(40);openEditWo(wid);},500);},{passive:true});
+      card.addEventListener('touchend',function(){clearTimeout(lpt);});
+      card.addEventListener('touchmove',function(){clearTimeout(lpt);});
+      card.addEventListener('contextmenu',function(e){e.preventDefault();openEditWo(wid);});
+    });
+  },50);
 }
 function suggestWorkout(){
   if(!DB.workouts.length||!DB.sessions.length)return null;
