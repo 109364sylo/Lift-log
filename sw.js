@@ -1,4 +1,4 @@
-// LIFT LOG Service Worker v2
+// LIFT LOG Service Worker v4
 // ROLLBACK: comment out the registration line in index.html
 // CACHE BUST: bump the version number below
 var CACHE = ‘liftlog-v4’;
@@ -20,8 +20,6 @@ return Promise.all(keys.filter(function(k) { return k !== CACHE; }).map(function
 );
 });
 
-// NETWORK FIRST — always tries network so new deploys always get through
-// Falls back to cache only when offline
 self.addEventListener(‘fetch’, function(e) {
 if(e.request.method !== ‘GET’) return;
 e.respondWith(
@@ -37,7 +35,6 @@ return caches.match(e.request);
 );
 });
 
-// Rest timer notification click handler
 self.addEventListener(‘notificationclick’, function(e) {
 e.notification.close();
 e.waitUntil(clients.openWindow(’/Lift-log/’));
