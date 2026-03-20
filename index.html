@@ -637,7 +637,7 @@ function renderHome(){
   DB.workouts.forEach(function(wo){
     var last=DB.sessions.filter(function(s){return s.workoutId===wo.id;}).sort(function(a,b){return b.date-a.date;})[0];
     var meta=(wo.exerciseIds||[]).length+' exercises · '+(last?'Last: '+fmtDate(last.date):'Never done');
-    el.innerHTML+='<div class="workout-card" onclick="startSession(\''+wo.id+'\')" data-woid="'+wo.id+'"><div><div class="workout-card-name">'+wo.name+'</div><div class="workout-card-meta">'+meta+'</div></div><div style="color:var(--text3);font-size:22px;">\u203a</div></div>';
+    el.innerHTML+='<div class="workout-card" onclick="startSession(\''+wo.id+'\')" data-woid="'+wo.id+'"><div><div class="workout-card-name">'+wo.name+'</div><div class="workout-card-meta">'+meta+'</div></div><div style="color:var(--text3);font-size:22px;">›</div></div>';
   });
   // Wire long press on workout cards via DOM
   setTimeout(function(){
@@ -1752,11 +1752,6 @@ window.location.reload(true);
 });
 });
 }
-window.onerror=function(msg,src,line,col,err){
-var el=document.getElementById(‘home-content’);
-if(el){var d=document.createElement(‘div’);d.style.cssText=‘background:#c00;color:#fff;padding:12px;margin:10px;border-radius:8px;font-size:11px;word-break:break-all;’;d.innerHTML=’<b>Error line ‘+line+’:</b><br>’+msg+’<br>’+(err&&err.stack?err.stack.split(’\n’)[0]:’’);el.appendChild(d);}
-return false;
-};
 DB.load();seedData();HL.load();renderHome();
 </script>
 
