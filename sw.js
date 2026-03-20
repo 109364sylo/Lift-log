@@ -1,7 +1,7 @@
 // LIFT LOG Service Worker v2
 // ROLLBACK: comment out the registration line in index.html
 // CACHE BUST: bump the version number below
-var CACHE = ‘liftlog-v3’;
+var CACHE = ‘liftlog-v4’;
 var ASSETS = [’/Lift-log/’, ‘/Lift-log/index.html’];
 
 self.addEventListener(‘install’, function(e) {
