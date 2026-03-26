@@ -221,7 +221,7 @@ canvas{width:100%!important;}
 .macro-add-btn{background:var(--accent);color:var(--accent-text);border:none;border-radius:8px;width:40px;height:40px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .macro-sub-btn{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);border-radius:8px;width:40px;height:40px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .pbar-row{display:flex;align-items:center;gap:10px;padding:5px 0;}
-.pbar-date{font-size:13px;color:var(--text2);width:56px;flex-shrink:0;}
+.pbar-date{font-size:13px;color:var(--text2);width:48px;flex-shrink:0;}
 .pbar-date.today{color:var(--accent);font-weight:700;}
 .pbar-track{flex:1;height:10px;background:var(--bg3);border-radius:5px;overflow:hidden;}
 .pbar-fill{height:100%;background:var(--accent);border-radius:5px;}
@@ -519,7 +519,7 @@ var HL={
 
 /* ===== PREFS ===== */
 var PREFS_KEY='liftlog_prefs';
-var DEFAULT_PREFS={defaultReps:8,defaultSets:3,muscleTargets:{Chest:10,Back:10,Shoulders:10,Quads:10,Hamstrings:10,Glutes:10,Core:10,Arms:10},features:{whimsy:true,scheduler:true,programmingGaps:true}};
+var DEFAULT_PREFS={defaultReps:8,defaultSets:1,muscleTargets:{Chest:10,Back:10,Shoulders:10,Quads:10,Hamstrings:10,Glutes:10,Core:10,Arms:10},features:{whimsy:true,scheduler:true,programmingGaps:true}};
 function loadPrefs(){try{var raw=localStorage.getItem(PREFS_KEY);if(!raw)return JSON.parse(JSON.stringify(DEFAULT_PREFS));var p=JSON.parse(raw);if(!p.muscleTargets)p.muscleTargets=JSON.parse(JSON.stringify(DEFAULT_PREFS.muscleTargets));if(!p.features)p.features=JSON.parse(JSON.stringify(DEFAULT_PREFS.features));for(var i=0;i<SCHED_MUSCLES.length;i++){if(p.muscleTargets[SCHED_MUSCLES[i]]==null)p.muscleTargets[SCHED_MUSCLES[i]]=10;}if(p.features.whimsy==null)p.features.whimsy=true;if(p.features.scheduler==null)p.features.scheduler=true;if(p.features.programmingGaps==null)p.features.programmingGaps=true;return p;}catch(e){return JSON.parse(JSON.stringify(DEFAULT_PREFS));}}
 function savePrefs(p){localStorage.setItem(PREFS_KEY,JSON.stringify(p));}
 function getFeature(k){var p=loadPrefs();return!p.features||p.features[k]!==false;}
@@ -789,10 +789,10 @@ function renderHealth(){
   var todayW=HL.weight[todayK];var recentW=getRecentDays(30).filter(function(d){return HL.weight[d]!=null;}).map(function(d){return{date:d,val:HL.weight[d]};});
   h+='<div class="section-label">Body Weight</div><div class="dashboard-card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;"><input type="number" inputmode="decimal" id="weight-input" placeholder="lbs" value="'+(todayW||'')+'" step="0.1" style="flex:1;"><button class="macro-add-btn" onclick="logWeight()">&#x2713;</button></div>'+(recentW.length?'<canvas id="weight-chart" height="100" style="margin-top:4px;"></canvas>':'<div style="color:var(--text3);font-size:12px;text-align:center;padding:8px 0;">Log your first weight above</div>')+'</div>';
   var recentS=getRecentDays(14);h+='<div class="section-label">Sleep</div><div class="dashboard-card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;"><input type="number" inputmode="decimal" id="sleep-input" placeholder="hours" value="'+(HL.sleep[todayK]||'')+'" step="0.5" min="0" max="24" style="flex:1;"><button class="macro-add-btn" onclick="logSleep()">&#x2713;</button></div>';
-  for(var rsi=0;rsi<recentS.length;rsi++){var rd=recentS[rsi];var rv=HL.sleep[rd];var rpct=rv?Math.min(rv/10*100,100).toFixed(1):0;var rdt=new Date(rd+'T12:00:00');var isT=rd===todayK;h+='<div class="pbar-row"><div class="pbar-date'+(isT?' today'  :'')+'>'+(isT?'Today':rdt.toLocaleDateString('en-US',{weekday:'short'}))+'</div><div class="pbar-track"><div class="pbar-fill" style="width:'+rpct+'%;background:#4488ff;"></div></div><div class="pbar-val">'+(rv!=null?rv+'h':'--')+'</div></div>';}h+='</div>';
+  for(var rsi=0;rsi<recentS.length;rsi++){var rd=recentS[rsi];var rv=HL.sleep[rd];var rpct=rv?Math.min(rv/10*100,100).toFixed(1):0;var rdt=new Date(rd+'T12:00:00');var isT=rd===todayK;h+='<div class="pbar-row"><div class="pbar-date'+(isT?' today':'')+'">'+(isT?'Today':rdt.toLocaleDateString('en-US',{weekday:'short'}))+'</div><div class="pbar-track"><div class="pbar-fill" style="width:'+rpct+'%;background:#4488ff;"></div></div><div class="pbar-val">'+(rv!=null?rv+'h':'--')+'</div></div>';}h+='</div>';
   var recentP=getRecentDays(7);var maxP=1;for(var rpi=0;rpi<recentP.length;rpi++){var rprot=(HL.macros[recentP[rpi]]||{}).protein||0;if(rprot>maxP)maxP=rprot;}
   h+='<div class="section-label">Recent Protein</div><div class="dashboard-card">';
-  for(var rpi2=0;rpi2<recentP.length;rpi2++){var rpd=recentP[rpi2];var rprot2=(HL.macros[rpd]||{}).protein||0;var rppct=(rprot2/maxP*100).toFixed(1);var rpdt=new Date(rpd+'T12:00:00');var isT2=rpd===todayK;h+='<div class="pbar-row"><div class="pbar-date'+(isT2?' today':'')+'>'+(isT2?'Today':rpdt.toLocaleDateString('en-US',{weekday:'short'}))+'</div><div class="pbar-track"><div class="pbar-fill" style="width:'+rppct+'%"></div></div><div class="pbar-val">'+rprot2+'g</div></div>';}h+='</div>';
+  for(var rpi2=0;rpi2<recentP.length;rpi2++){var rpd=recentP[rpi2];var rprot2=(HL.macros[rpd]||{}).protein||0;var rppct=(rprot2/maxP*100).toFixed(1);var rpdt=new Date(rpd+'T12:00:00');var isT2=rpd===todayK;h+='<div class="pbar-row"><div class="pbar-date'+(isT2?' today':'')+'">'+(isT2?'Today':rpdt.toLocaleDateString('en-US',{weekday:'short'}))+'</div><div class="pbar-track"><div class="pbar-fill" style="width:'+rppct+'%"></div></div><div class="pbar-val">'+rprot2+'g</div></div>';}h+='</div>';
   el.innerHTML=h;
   for(var mbi=0;mbi<allM.length;mbi++){(function(m){var ab=document.getElementById('madd-'+m.key);var sb=document.getElementById('msub-'+m.key);if(ab)ab.onclick=function(){addMacro(m.key);};if(sb)sb.onclick=function(){subMacro(m.key);};})(allM[mbi]);}
   if(recentW.length)setTimeout(function(){drawTrendChart('weight-chart',recentW);},50);
