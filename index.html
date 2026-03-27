@@ -691,13 +691,14 @@ function delSet(ei,si){session.exercises[ei].sets.splice(si,1);renderSession();}
 function updSet(ei,si,f,v){session.exercises[ei].sets[si][f]=v===''?'':(isNaN(parseFloat(v))?v:parseFloat(v));}
 function removeEx(ei){stopExCountdown(ei);session.exercises.splice(ei,1);renderSession();}
 function saveSessionProgress(){if(!session)return;localStorage.setItem('liftlog_inprogress',JSON.stringify(session));var btn=document.querySelector('.btn-save-progress');if(btn){var orig=btn.textContent;btn.textContent='Saved';setTimeout(function(){btn.textContent=orig;},1500);}}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&session){localStorage.setItem('liftlog_inprogress',JSON.stringify(session));}});
 function finishSession(){
   if(!session)return;
   var tkeys=[];for(var k in exTimers)tkeys.push(k);for(var ti=0;ti<tkeys.length;ti++)stopExCountdown(parseInt(tkeys[ti]));exTimers={};
   for(var fi=0;fi<session.exercises.length;fi++){var fx=session.exercises[fi];if(fx.isDuration)fx.sets=fx.sets.filter(function(s){return s.seconds!=='';});else fx.sets=fx.sets.filter(function(s){return s.weight!==''||s.reps!=='';});}
   var newPRs=[];
   for(var pi=0;pi<session.exercises.length;pi++){var px=session.exercises[pi];if(px.isDuration)continue;var mw=0;for(var psi=0;psi<px.sets.length;psi++){var pw=parseFloat(px.sets[psi].weight)||0;if(pw>mw)mw=pw;}if(!mw)continue;var prior=DB.sessions.filter(function(s){return s.exercises.some(function(e){return e.exId===px.exId;});});if(!prior.length){newPRs.push({name:px.exName,weight:mw});continue;}var pm=0;for(var ppi=0;ppi<prior.length;ppi++){var ppx=prior[ppi].exercises.find(function(e){return e.exId===px.exId;});if(!ppx)continue;for(var ppsi=0;ppsi<ppx.sets.length;ppsi++){var ppw=parseFloat(ppx.sets[ppsi].weight)||0;if(ppw>pm)pm=ppw;}}if(mw>pm)newPRs.push({name:px.exName,weight:mw});}
-  DB.sessions.push(session);DB.save();session=null;stopRest();
+  DB.sessions.push(session);DB.save();session=null;stopRest();localStorage.removeItem('liftlog_inprogress');
   if(newPRs.length&&'Notification'in window&&Notification.permission==='granted'){for(var npi=0;npi<newPRs.length;npi++){(function(pr,delay){setTimeout(function(){try{new Notification('New PR!',{body:pr.weight+' lbs on '+pr.name});}catch(e){}},delay);})(newPRs[npi],npi*800);}}
   showPage('home');
 }
@@ -950,7 +951,60 @@ function saveMuscleTarget(muscle,val){var p=loadPrefs();if(!p.muscleTargets)p.mu
 function toggleFeature(key,val){var p=loadPrefs();if(!p.features)p.features={};p.features[key]=val;savePrefs(p);}
 function settingsSetAll(){var v=parseInt(document.getElementById('mt-all').value);if(!v)return;var pr=loadPrefs();if(!pr.muscleTargets)pr.muscleTargets={};for(var sai=0;sai<SCHED_MUSCLES.length;sai++){pr.muscleTargets[SCHED_MUSCLES[sai]]=v;var mi=document.getElementById('mt-'+SCHED_MUSCLES[sai]);if(mi)mi.value=v;}savePrefs(pr);document.getElementById('mt-all').placeholder='Set to '+v;document.getElementById('mt-all').value='';}
 function checkForUpdate(){checkForUpdates();}
-function checkForUpdates(){if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(regs){for(var ri=0;ri<regs.length;ri++)regs[ri].unregister();});caches.keys().then(function(keys){for(var ki=0;ki<keys.length;ki++)caches.delete(keys[ki]);});}setTimeout(function(){window.location.reload(true);},300);}
+function checkForUpdates(){runMigrations();if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(regs){for(var ri=0;ri<regs.length;ri++)regs[ri].unregister();});caches.keys().then(function(keys){for(var ki=0;ki<keys.length;ki++)caches.delete(keys[ki]);});}setTimeout(function(){window.location.reload(true);},300);}
+
+/* ===== MIGRATIONS ===== */
+var MIGRATIONS=[
+  {v:1,run:function(){
+    // v1: insert missing cardio exercises with duration:true
+    var cardio=[
+      ['Running','Cardio',['Full Body'],[],true],
+      ['Cycling','Cardio',['Quads'],['Glutes','Hamstrings'],true],
+      ['Rowing Machine','Cardio',['Lats'],['Rhomboids','Biceps'],true],
+      ['Stair Climber','Cardio',['Quads'],['Glutes','Calves'],true],
+      ['Jump Rope','Cardio',['Calves'],['Full Body'],true],
+      ['Elliptical','Cardio',['Full Body'],[],true],
+      ['Swimming','Cardio',['Lats'],['Chest','Front Delt'],true]
+    ];
+    var changed=false;
+    for(var i=0;i<cardio.length;i++){
+      var r=cardio[i];
+      var exists=false;
+      for(var j=0;j<DB.exercises.length;j++){if(DB.exercises[j].name===r[0]){exists=true;break;}}
+      if(!exists){DB.exercises.push({id:uid(),name:r[0],category:r[1],muscles_primary:r[2],muscles_secondary:r[3],duration:r[4]});changed=true;}
+    }
+    if(DB.categories.indexOf('Cardio')<0){DB.categories.push('Cardio');changed=true;}
+    if(changed)DB.save();
+  }},
+  {v:2,run:function(){
+    // v2: insert missing obliques exercises
+    var obliques=[
+      ['Side Plank','Core',['Obliques'],['Abs']],
+      ['Russian Twist','Core',['Obliques'],['Abs']],
+      ['Oblique Crunch','Core',['Obliques'],[]],
+      ['Woodchop','Core',['Obliques'],['Abs']]
+    ];
+    var changed=false;
+    for(var i=0;i<obliques.length;i++){
+      var r=obliques[i];
+      var exists=false;
+      for(var j=0;j<DB.exercises.length;j++){if(DB.exercises[j].name===r[0]){exists=true;break;}}
+      if(!exists){DB.exercises.push({id:uid(),name:r[0],category:r[1],muscles_primary:r[2],muscles_secondary:r[3],duration:false});changed=true;}
+    }
+    if(changed)DB.save();
+  }}
+];
+function runMigrations(){
+  var done={};
+  try{done=JSON.parse(localStorage.getItem('liftlog_migrations')||'{}');}catch(e){}
+  var ran=false;
+  for(var i=0;i<MIGRATIONS.length;i++){
+    if(!done[MIGRATIONS[i].v]){
+      try{MIGRATIONS[i].run();done[MIGRATIONS[i].v]=true;ran=true;}catch(e){console.error('Migration v'+MIGRATIONS[i].v+' failed:',e);}
+    }
+  }
+  if(ran)localStorage.setItem('liftlog_migrations',JSON.stringify(done));
+}
 
 /* ===== WHIMSY ===== */
 var _whimsyToastTimer=null;
@@ -968,7 +1022,12 @@ function _scheduleWhimsy(){if(!_isW())return;clearTimeout(_whimsyToastTimer);_wh
 document.addEventListener('click',function(e){if(!_isW())return;_whimsy_spark(e.clientX,e.clientY);});
 
 /* ===== BOOT ===== */
-DB.load();seedData();HL.load();renderHome();
+DB.load();seedData();HL.load();runMigrations();
+(function(){
+  var ip=localStorage.getItem('liftlog_inprogress');
+  if(ip){try{var s=JSON.parse(ip);if(s&&s.id&&s.exercises){session=s;exTimers={};renderHome();var pgs=document.querySelectorAll('.page');for(var i=0;i<pgs.length;i++)pgs[i].classList.remove('active');document.getElementById('page-session').classList.add('active');renderSession();return;}}catch(e){localStorage.removeItem('liftlog_inprogress');}}
+  renderHome();
+}());
 </script>
 </body>
 </html>
