@@ -2146,7 +2146,7 @@ document.getElementById('confirm-overlay').onclick = function(e){
   initTracker();
   wireMarkDirty();
 
-  // ── SERVICE WORKER REGISTRATION ──
+  // ── SERVICE WORKER REGISTRATION ── v2
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').then(function(reg){
       // Check for updates when user taps the button
