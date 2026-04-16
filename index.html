@@ -955,9 +955,7 @@ function checkForUpdate(){checkForUpdates();}
 function checkForUpdates(){runMigrations();if(‘serviceWorker’ in navigator){navigator.serviceWorker.getRegistrations().then(function(regs){for(var ri=0;ri<regs.length;ri++)regs[ri].unregister();});caches.keys().then(function(keys){for(var ki=0;ki<keys.length;ki++)caches.delete(keys[ki]);});}setTimeout(function(){window.location.reload(true);},300);}
 
 /* ===== MIGRATIONS ===== */
-var MIGRATIONS=[
-{v:1,run:function(){
-// v1: insert missing cardio exercises with duration:true
+function migration1(){
 var cardio=[
 [‘Running’,‘Cardio’,[‘Full Body’],[],true],
 [‘Cycling’,‘Cardio’,[‘Quads’],[‘Glutes’,‘Hamstrings’],true],
@@ -967,44 +965,37 @@ var cardio=[
 [‘Elliptical’,‘Cardio’,[‘Full Body’],[],true],
 [‘Swimming’,‘Cardio’,[‘Lats’],[‘Chest’,‘Front Delt’],true]
 ];
-var changed=false;
-for(var i=0;i<cardio.length;i++){
-var r=cardio[i];
-var exists=false;
-for(var j=0;j<DB.exercises.length;j++){if(DB.exercises[j].name===r[0]){exists=true;break;}}
-if(!exists){DB.exercises.push({id:uid(),name:r[0],category:r[1],muscles_primary:r[2],muscles_secondary:r[3],duration:r[4]});changed=true;}
+var m1changed=false;
+for(var m1i=0;m1i<cardio.length;m1i++){
+var m1r=cardio[m1i];var m1ex=false;
+for(var m1j=0;m1j<DB.exercises.length;m1j++){if(DB.exercises[m1j].name===m1r[0]){m1ex=true;break;}}
+if(!m1ex){DB.exercises.push({id:uid(),name:m1r[0],category:m1r[1],muscles_primary:m1r[2],muscles_secondary:m1r[3],duration:m1r[4]});m1changed=true;}
 }
-if(DB.categories.indexOf(‘Cardio’)<0){DB.categories.push(‘Cardio’);changed=true;}
-if(changed)DB.save();
-}},
-{v:2,run:function(){
-// v2: insert missing obliques exercises
+if(DB.categories.indexOf(‘Cardio’)<0){DB.categories.push(‘Cardio’);m1changed=true;}
+if(m1changed)DB.save();
+}
+function migration2(){
 var obl=[
 [‘Side Plank’,‘Core’,[‘Obliques’],[‘Abs’]],
 [‘Russian Twist’,‘Core’,[‘Obliques’],[‘Abs’]],
 [‘Oblique Crunch’,‘Core’,[‘Obliques’],[]],
 [‘Woodchop’,‘Core’,[‘Obliques’],[‘Abs’]]
 ];
-var changed2=false;
-for(var oi=0;oi<obl.length;oi++){
-var or2=obl[oi];
-var oex=false;
-for(var oj=0;oj<DB.exercises.length;oj++){if(DB.exercises[oj].name===or2[0]){oex=true;break;}}
-if(!oex){DB.exercises.push({id:uid(),name:or2[0],category:or2[1],muscles_primary:or2[2],muscles_secondary:or2[3],duration:false});changed2=true;}
+var m2changed=false;
+for(var m2i=0;m2i<obl.length;m2i++){
+var m2r=obl[m2i];var m2ex=false;
+for(var m2j=0;m2j<DB.exercises.length;m2j++){if(DB.exercises[m2j].name===m2r[0]){m2ex=true;break;}}
+if(!m2ex){DB.exercises.push({id:uid(),name:m2r[0],category:m2r[1],muscles_primary:m2r[2],muscles_secondary:m2r[3],duration:false});m2changed=true;}
 }
-if(changed2)DB.save();
-}}
-];
+if(m2changed)DB.save();
+}
 function runMigrations(){
 var done={};
 try{done=JSON.parse(localStorage.getItem(‘liftlog_migrations’)||’{}’);}catch(e){}
-var ran=false;
-for(var i=0;i<MIGRATIONS.length;i++){
-if(!done[MIGRATIONS[i].v]){
-try{MIGRATIONS[i].run();done[MIGRATIONS[i].v]=true;ran=true;}catch(e){console.error(‘Migration v’+MIGRATIONS[i].v+’ failed:’,e);}
-}
-}
-if(ran)localStorage.setItem(‘liftlog_migrations’,JSON.stringify(done));
+var mran=false;
+if(!done[1]){try{migration1();done[1]=true;mran=true;}catch(e){console.error(‘migration1 failed:’,e);}}
+if(!done[2]){try{migration2();done[2]=true;mran=true;}catch(e){console.error(‘migration2 failed:’,e);}}
+if(mran)localStorage.setItem(‘liftlog_migrations’,JSON.stringify(done));
 }
 
 /* ===== WHIMSY ===== */
