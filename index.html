@@ -979,20 +979,20 @@ if(changed)DB.save();
 }},
 {v:2,run:function(){
 // v2: insert missing obliques exercises
-var obliques=[
+var obl=[
 [‘Side Plank’,‘Core’,[‘Obliques’],[‘Abs’]],
 [‘Russian Twist’,‘Core’,[‘Obliques’],[‘Abs’]],
 [‘Oblique Crunch’,‘Core’,[‘Obliques’],[]],
 [‘Woodchop’,‘Core’,[‘Obliques’],[‘Abs’]]
 ];
-var changed=false;
-for(var i=0;i<obliques.length;i++){
-var r=obliques[i];
-var exists=false;
-for(var j=0;j<DB.exercises.length;j++){if(DB.exercises[j].name===r[0]){exists=true;break;}}
-if(!exists){DB.exercises.push({id:uid(),name:r[0],category:r[1],muscles_primary:r[2],muscles_secondary:r[3],duration:false});changed=true;}
+var changed2=false;
+for(var oi=0;oi<obl.length;oi++){
+var or2=obl[oi];
+var oex=false;
+for(var oj=0;oj<DB.exercises.length;oj++){if(DB.exercises[oj].name===or2[0]){oex=true;break;}}
+if(!oex){DB.exercises.push({id:uid(),name:or2[0],category:or2[1],muscles_primary:or2[2],muscles_secondary:or2[3],duration:false});changed2=true;}
 }
-if(changed)DB.save();
+if(changed2)DB.save();
 }}
 ];
 function runMigrations(){
